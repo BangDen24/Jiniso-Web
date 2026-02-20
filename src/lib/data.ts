@@ -2,7 +2,8 @@ export interface Product {
     id: string;
     name: string;
     price: number;
-    image: string;
+    image: string; // Keep for backward compatibility/thumbnail
+    images: string[];
     description: string;
     category: 'Men' | 'Women' | 'Kids' | 'Accessories' | 'Collections';
     subCategory: 'Tops' | 'Bottoms' | 'Outerwear' | 'Innerwear' | 'Accessories';
@@ -27,7 +28,7 @@ export interface Testimonial {
     date?: string;
 }
 
-export interface Step {
+export interface TrackingStep {
     status: string;
     date: string;
     location?: string;
@@ -41,13 +42,13 @@ export interface Order {
         productId: string;
         quantity: number;
         price: number;
-        tracking?: Step[];
+        tracking?: TrackingStep[];
         courierName?: string;
         estimatedArrival?: string;
         shippedDate?: string;
     }[];
     status: 'Delivered' | 'Processing' | 'Shipped';
-    paymentTimeline?: Step[];
+    paymentTimeline?: TrackingStep[];
     paymentMethod?: string;
 }
 
@@ -87,20 +88,132 @@ export const TESTIMONIALS: Testimonial[] = [
 
 const categoryPrefixes = ['Essential', 'Urban', 'Classic', 'Premium', 'Street', 'Modern', 'Vintage', 'Minimal', 'Active', 'Daily'];
 const productTypes = [
-    { type: 'Oversized Tee', price: 199000, img: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=800&auto=format&fit=crop&q=60', cat: 'Women' as const, sub: 'Tops' as const },
-    { type: 'Slim Fit Jeans', price: 499000, img: 'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=800&auto=format&fit=crop&q=60', cat: 'Men' as const, sub: 'Bottoms' as const },
-    { type: 'Canvas Tote', price: 89000, img: 'https://images.unsplash.com/photo-1544816153-09730556637e?w=800&auto=format&fit=crop&q=60', cat: 'Accessories' as const, sub: 'Accessories' as const },
-    { type: 'Tech Hoodie', price: 359000, img: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800&auto=format&fit=crop&q=60', cat: 'Collections' as const, sub: 'Outerwear' as const },
-    { type: 'Cargo Pants', price: 429000, img: 'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=800&auto=format&fit=crop&q=60', cat: 'Men' as const, sub: 'Bottoms' as const },
-    { type: 'Denim Jacket', price: 599000, img: 'https://images.unsplash.com/photo-1576905341935-422730623643?w=800&auto=format&fit=crop&q=60', cat: 'Women' as const, sub: 'Outerwear' as const },
-    { type: 'Beanie Hat', price: 129000, img: 'https://images.unsplash.com/photo-1576871337622-98d48d365da2?w=800&auto=format&fit=crop&q=60', cat: 'Accessories' as const, sub: 'Accessories' as const },
-    { type: 'Cotton Socks', price: 49000, img: 'https://images.unsplash.com/photo-1582966298438-641ff1ec8d7d?w=800&auto=format&fit=crop&q=60', cat: 'Accessories' as const, sub: 'Accessories' as const },
-    { type: 'Windbreaker', price: 459000, img: 'https://images.unsplash.com/photo-1620331311520-246422ff83f9?w=800&auto=format&fit=crop&q=60', cat: 'Collections' as const, sub: 'Outerwear' as const },
-    { type: 'Linen Shirt', price: 289000, img: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=800&auto=format&fit=crop&q=60', cat: 'Men' as const, sub: 'Tops' as const },
-    { type: 'Polo Shirt', price: 249000, img: 'https://images.unsplash.com/photo-1586363104864-50e2246b621e?w=800&auto=format&fit=crop&q=60', cat: 'Men' as const, sub: 'Tops' as const },
-    { type: 'Chino Pants', price: 399000, img: 'https://images.unsplash.com/photo-1473966968600-fa804b869628?w=800&auto=format&fit=crop&q=60', cat: 'Men' as const, sub: 'Bottoms' as const },
-    { type: 'Sweatshirt', price: 299000, img: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800&auto=format&fit=crop&q=60', cat: 'Women' as const, sub: 'Tops' as const },
-    { type: 'Skater Skirt', price: 189000, img: 'https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?w=800&auto=format&fit=crop&q=60', cat: 'Women' as const, sub: 'Bottoms' as const },
+    {
+        type: 'Oversized Tee', price: 199000,
+        imgs: [
+            'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=800&auto=format&fit=crop&q=60',
+            'https://images.unsplash.com/photo-1554568218-0f1715e72254?w=800&auto=format&fit=crop&q=60',
+            'https://images.unsplash.com/photo-1562157873-818bc0726f68?w=800&auto=format&fit=crop&q=60'
+        ],
+        cat: 'Women' as const, sub: 'Tops' as const
+    },
+    {
+        type: 'Slim Fit Jeans', price: 499000,
+        imgs: [
+            'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=800&auto=format&fit=crop&q=60',
+            'https://images.unsplash.com/photo-1542272604-787c3835535d?w=800&auto=format&fit=crop&q=60',
+            'https://images.unsplash.com/photo-1555689502-c4b22d76c56f?w=800&auto=format&fit=crop&q=60'
+        ],
+        cat: 'Men' as const, sub: 'Bottoms' as const
+    },
+    {
+        type: 'Canvas Tote', price: 89000,
+        imgs: [
+            'https://images.unsplash.com/photo-1544816153-09730556637e?w=800&auto=format&fit=crop&q=60',
+            'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=800&auto=format&fit=crop&q=60',
+            'https://images.unsplash.com/photo-1610494050212-9f37c76891ee?w=800&auto=format&fit=crop&q=60'
+        ],
+        cat: 'Accessories' as const, sub: 'Accessories' as const
+    },
+    {
+        type: 'Tech Hoodie', price: 359000,
+        imgs: [
+            'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800&auto=format&fit=crop&q=60',
+            'https://images.unsplash.com/photo-1578587018452-892bacefd3f2?w=800&auto=format&fit=crop&q=60',
+            'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=800&auto=format&fit=crop&q=60'
+        ],
+        cat: 'Collections' as const, sub: 'Outerwear' as const
+    },
+    {
+        type: 'Cargo Pants', price: 429000,
+        imgs: [
+            'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=800&auto=format&fit=crop&q=60',
+            'https://images.unsplash.com/photo-1604176354204-926873ff3da9?w=800&auto=format&fit=crop&q=60',
+            'https://images.unsplash.com/photo-1624371414361-e6e8ea403522?w=800&auto=format&fit=crop&q=60'
+        ],
+        cat: 'Men' as const, sub: 'Bottoms' as const
+    },
+    {
+        type: 'Denim Jacket', price: 599000,
+        imgs: [
+            'https://images.unsplash.com/photo-1576905341935-422730623643?w=800&auto=format&fit=crop&q=60',
+            'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800&auto=format&fit=crop&q=60',
+            'https://images.unsplash.com/photo-1520975916090-3105956dac38?w=800&auto=format&fit=crop&q=60'
+        ],
+        cat: 'Women' as const, sub: 'Outerwear' as const
+    },
+    {
+        type: 'Beanie Hat', price: 129000,
+        imgs: [
+            'https://images.unsplash.com/photo-1576871337622-98d48d365da2?w=800&auto=format&fit=crop&q=60',
+            'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=800&auto=format&fit=crop&q=60',
+            'https://images.unsplash.com/photo-1534215754734-18e55d13e346?w=800&auto=format&fit=crop&q=60'
+        ],
+        cat: 'Accessories' as const, sub: 'Accessories' as const
+    },
+    {
+        type: 'Cotton Socks', price: 49000,
+        imgs: [
+            'https://images.unsplash.com/photo-1582966298438-641ff1ec8d7d?w=800&auto=format&fit=crop&q=60',
+            'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=800&auto=format&fit=crop&q=60',
+            'https://images.unsplash.com/photo-1586351112444-24e525a1338d?w=800&auto=format&fit=crop&q=60'
+        ],
+        cat: 'Accessories' as const, sub: 'Accessories' as const
+    },
+    {
+        type: 'Windbreaker', price: 459000,
+        imgs: [
+            'https://images.unsplash.com/photo-1620331311520-246422ff83f9?w=800&auto=format&fit=crop&q=60',
+            'https://images.unsplash.com/photo-1524338198850-e75865442a44?w=800&auto=format&fit=crop&q=60',
+            'https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?w=800&auto=format&fit=crop&q=60'
+        ],
+        cat: 'Collections' as const, sub: 'Outerwear' as const
+    },
+    {
+        type: 'Linen Shirt', price: 289000,
+        imgs: [
+            'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=800&auto=format&fit=crop&q=60',
+            'https://images.unsplash.com/photo-1598033129183-c4f50c717658?w=800&auto=format&fit=crop&q=60',
+            'https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?w=800&auto=format&fit=crop&q=60'
+        ],
+        cat: 'Men' as const, sub: 'Tops' as const
+    },
+    {
+        type: 'Polo Shirt', price: 249000,
+        imgs: [
+            'https://images.unsplash.com/photo-1586363104864-50e2246b621e?w=800&auto=format&fit=crop&q=60',
+            'https://images.unsplash.com/photo-1532332248682-206cc786359f?w=800&auto=format&fit=crop&q=60',
+            'https://images.unsplash.com/photo-1581655353564-df123a1eb820?w=800&auto=format&fit=crop&q=60'
+        ],
+        cat: 'Men' as const, sub: 'Tops' as const
+    },
+    {
+        type: 'Chino Pants', price: 399000,
+        imgs: [
+            'https://images.unsplash.com/photo-1473966968600-fa804b869628?w=800&auto=format&fit=crop&q=60',
+            'https://images.unsplash.com/photo-1565084888279-aff996979482?w=800&auto=format&fit=crop&q=60',
+            'https://images.unsplash.com/photo-1560233026-ad254fa8da38?w=800&auto=format&fit=crop&q=60'
+        ],
+        cat: 'Men' as const, sub: 'Bottoms' as const
+    },
+    {
+        type: 'Sweatshirt', price: 299000,
+        imgs: [
+            'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800&auto=format&fit=crop&q=60',
+            'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=800&auto=format&fit=crop&q=60',
+            'https://images.unsplash.com/photo-1516762689617-e1cffcef479d?w=800&auto=format&fit=crop&q=60'
+        ],
+        cat: 'Women' as const, sub: 'Tops' as const
+    },
+    {
+        type: 'Skater Skirt', price: 189000,
+        imgs: [
+            'https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?w=800&auto=format&fit=crop&q=60',
+            'https://images.unsplash.com/photo-1591360236630-4ec927b87820?w=800&auto=format&fit=crop&q=60',
+            'https://images.unsplash.com/photo-1616150638538-ffb0679a3fc4?w=800&auto=format&fit=crop&q=60'
+        ],
+        cat: 'Women' as const, sub: 'Bottoms' as const
+    },
 ];
 
 const generateProducts = (count: number): Product[] => {
@@ -115,7 +228,8 @@ const generateProducts = (count: number): Product[] => {
             id: `p-${i}`,
             name: `${prefix} ${baseProduct.type} ${i}`,
             price: baseProduct.price + (Math.floor(Math.random() * 20) * 1000),
-            image: baseProduct.img,
+            image: baseProduct.imgs[0],
+            images: baseProduct.imgs,
             category: baseProduct.cat,
             subCategory: baseProduct.sub,
             isFeatured: i <= 8,
@@ -148,7 +262,7 @@ const generateLogistics = (status: 'Processing' | 'Shipped' | 'Delivered', order
     const outForDeliveryDate = addDays(orderDate, 3);
     const estimatedArrival = addDays(orderDate, 3);
 
-    const steps: Step[] = [
+    const steps: TrackingStep[] = [
         { status: 'Order Created', date: orderDateStr.split('T')[0], location: 'System', description: 'Order has been successfully created and confirmed.' },
     ];
 
@@ -177,7 +291,7 @@ const generateLogistics = (status: 'Processing' | 'Shipped' | 'Delivered', order
     };
 };
 
-const generatePaymentTimeline = (orderDateStr: string): Step[] => {
+const generatePaymentTimeline = (orderDateStr: string): TrackingStep[] => {
     const orderDate = new Date(orderDateStr);
     const addMinutes = (d: Date, mins: number) => {
         const date = new Date(d);

@@ -9,6 +9,7 @@ const Navbar = () => {
     const { user, login, logout, lang, setLang, t } = useDemo();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [activeMenu, setActiveMenu] = useState<string | null>(null);
+    const [searchQuery, setSearchQuery] = useState('');
 
     const cartCount = user?.cartItems.reduce((acc, item) => acc + item.quantity, 0) || 0;
 
@@ -115,10 +116,19 @@ const Navbar = () => {
 
                     <div className="flex items-center space-x-4 sm:space-x-6">
                         <div className="hidden md:flex items-center bg-zinc-100 rounded-sm px-3 py-1.5 focus-within:ring-1 ring-accent/20 transition-all">
-                            <Search size={16} className="text-muted mr-2" />
+                            <Search size={16} className="text-muted mr-2 cursor-pointer hover:text-accent" onClick={() => {
+                                if (searchQuery.trim()) window.location.href = `/products?search=${encodeURIComponent(searchQuery.trim())}`;
+                            }} />
                             <input
                                 type="text"
                                 placeholder={t('search')}
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter' && searchQuery.trim()) {
+                                        window.location.href = `/products?search=${encodeURIComponent(searchQuery.trim())}`;
+                                    }
+                                }}
                                 className="bg-transparent border-none text-xs focus:outline-none w-32 xl:w-48"
                             />
                         </div>
@@ -176,6 +186,24 @@ const Navbar = () => {
                             ))}
                         </div>
                         <button onClick={() => setIsMobileMenuOpen(false)}><X size={24} /></button>
+                    </div>
+                    <div className="p-6 border-b border-zinc-100">
+                        <div className="flex items-center bg-zinc-100 rounded-sm px-4 py-3">
+                            <Search size={18} className="text-muted mr-3" />
+                            <input
+                                type="text"
+                                placeholder={t('search')}
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter' && searchQuery.trim()) {
+                                        setIsMobileMenuOpen(false);
+                                        window.location.href = `/products?search=${encodeURIComponent(searchQuery.trim())}`;
+                                    }
+                                }}
+                                className="bg-transparent border-none text-sm focus:outline-none flex-1"
+                            />
+                        </div>
                     </div>
                     <div className="flex flex-col p-6 space-y-8">
                         {mainCategories.map((cat) => (

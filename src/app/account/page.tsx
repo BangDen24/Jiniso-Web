@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { useDemo } from '@/context/DemoContext';
 import { PRODUCTS } from '@/lib/data';
-import { User as UserIcon, Mail, Phone, Calendar, ShoppingCart, Eye, Package, MapPin, History } from 'lucide-react';
+import { User as UserIcon, Mail, Phone, Calendar, ShoppingCart, Eye, Package, MapPin, History, Sparkles, ChevronRight } from 'lucide-react';
 
 const AccountPage = () => {
     const { user, timeline, t } = useDemo();
@@ -34,41 +34,49 @@ const AccountPage = () => {
     };
 
     return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 sm:gap-16">
 
                 {/* Profile Section */}
-                <div className="lg:col-span-1 space-y-12">
+                <div className="lg:col-span-1 space-y-10 sm:space-y-12 animate-fade-in-up">
                     <section className="space-y-6">
-                        <h1 className="text-4xl font-bold tracking-tighter uppercase italic underline decoration-accent/10">{t('account')}</h1>
-                        <div className="premium-card p-10 space-y-8 bg-zinc-50/30 shadow-sm border border-zinc-100">
-                            <div className="w-20 h-20 bg-accent rounded-full flex items-center justify-center text-white ring-8 ring-accent/5">
+                        <h1 className="text-3xl sm:text-4xl font-bold tracking-tighter uppercase italic underline decoration-accent/10">{t('account')}</h1>
+                        <div className="premium-card p-8 sm:p-10 space-y-8 bg-zinc-50/50 shadow-sm border border-zinc-100 relative overflow-hidden group">
+                            <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                                <UserIcon size={120} />
+                            </div>
+                            <div className="w-20 h-20 bg-accent rounded-full flex items-center justify-center text-white ring-8 ring-accent/5 relative z-10 shadow-xl">
                                 <UserIcon size={32} />
                             </div>
-                            <div className="space-y-4">
-                                <h2 className="text-2xl font-bold uppercase tracking-tight italic">{user.name}</h2>
-                                <div className="space-y-3 text-[11px] font-bold uppercase tracking-widest text-muted">
-                                    <div className="flex items-center space-x-3">
-                                        <Mail size={16} />
+                            <div className="space-y-4 relative z-10">
+                                <h2 className="text-2xl sm:text-3xl font-bold uppercase tracking-tight italic text-zinc-900">{user.name}</h2>
+                                <div className="space-y-3 text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-muted">
+                                    <div className="flex items-center space-x-3 bg-white/50 p-2 rounded-sm border border-zinc-200/50">
+                                        <Mail size={14} className="text-accent" />
                                         <span>{user.email}</span>
                                     </div>
-                                    <div className="flex items-center space-x-3">
-                                        <Phone size={16} />
+                                    <div className="flex items-center space-x-3 bg-white/50 p-2 rounded-sm border border-zinc-200/50">
+                                        <Phone size={14} className="text-accent" />
                                         <span>{user.phone}</span>
                                     </div>
                                 </div>
                             </div>
-                            <button className="bg-white border border-border text-accent w-full py-3 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-zinc-50 transition-all">Edit Details</button>
+                            <button className="bg-white border border-zinc-200 text-accent w-full py-4 text-[10px] font-bold uppercase tracking-[0.3em] hover:bg-accent hover:text-white transition-all shadow-sm relative z-10">
+                                Edit Member Profile
+                            </button>
                         </div>
                     </section>
 
                     <section className="space-y-6">
-                        <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-accent border-b pb-2">{t('recentVisitHistory')}</h2>
+                        <h2 className="text-[11px] font-bold uppercase tracking-[0.3em] text-accent border-b border-accent/20 pb-3 flex items-center justify-between">
+                            <span>{t('recentVisitHistory')}</span>
+                            <Sparkles size={14} />
+                        </h2>
                         <div className="space-y-4">
                             {user.visitHistory.map((visit, i) => (
-                                <div key={i} className="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest">
+                                <div key={i} className="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest p-4 bg-zinc-50/30 border-l-2 border-accent/20 hover:bg-white hover:border-accent transition-all">
                                     <span className="text-muted">{visit.action}</span>
-                                    <span className="text-accent">{new Date(visit.date).toLocaleDateString()}</span>
+                                    <span className="text-accent/60">{new Date(visit.date).toLocaleDateString()}</span>
                                 </div>
                             ))}
                         </div>
@@ -76,37 +84,56 @@ const AccountPage = () => {
                 </div>
 
                 {/* Journey Timeline Section */}
-                <div className="lg:col-span-2 space-y-8">
-                    <div className="flex items-center justify-between border-b pb-4">
-                        <h2 className="text-2xl font-bold uppercase tracking-tighter italic">{t('journeyTimeline')}</h2>
-                        <span className="text-[9px] font-bold uppercase tracking-widest bg-zinc-900 text-white px-3 py-1 rounded-sm">Sync Live</span>
+                <div className="lg:col-span-2 space-y-10 sm:space-y-12 animate-fade-in-up delay-100">
+                    <div className="flex items-center justify-between border-b border-zinc-100 pb-4">
+                        <div className="space-y-1">
+                            <h2 className="text-2xl sm:text-3xl font-bold uppercase tracking-tighter italic">{t('journeyTimeline')}</h2>
+                            <p className="text-[10px] font-bold text-muted uppercase tracking-[0.3em]">Your complete brand experience sequence</p>
+                        </div>
+                        <div className="flex items-center space-x-2 bg-black text-white px-4 py-2 rounded-full shadow-lg">
+                            <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
+                            <span className="text-[9px] font-bold uppercase tracking-widest">LIVE SYNC</span>
+                        </div>
                     </div>
 
-                    <div className="relative border-l-2 border-zinc-100 ml-4 mt-12 space-y-12 pb-10">
+                    <div className="relative border-l-2 border-zinc-100 ml-5 mt-16 space-y-12 sm:space-y-16 pb-10">
                         {timeline.length === 0 && (
-                            <div className="pl-10 text-muted text-xs font-semibold uppercase italic tracking-wider">
-                                No interactions recorded yet. Explore the shop to build your timeline.
+                            <div className="pl-12 py-10 bg-zinc-50 border border-dashed border-zinc-200 text-muted text-xs font-bold uppercase italic tracking-widest text-center">
+                                No interactions recorded. <br />Start browsing to build your journey.
                             </div>
                         )}
                         {timeline.map((event, index) => (
-                            <div key={event.id} className="relative pl-10">
+                            <div key={event.id} className="relative pl-12 group">
                                 {/* Timeline Dot */}
-                                <div className={`absolute -left-[18px] top-1 w-8 h-8 rounded-full flex items-center justify-center ring-4 ring-white shadow-sm ${getEventColor(event.type)}`}>
+                                <div className={`absolute -left-[21px] top-1 w-10 h-10 rounded-full flex items-center justify-center ring-[6px] ring-white shadow-xl transition-all duration-500 group-hover:scale-110 ${getEventColor(event.type)}`}>
                                     {getEventIcon(event.type)}
                                 </div>
 
-                                <div className="space-y-2">
-                                    <div className="flex items-center justify-between">
-                                        <p className="text-[11px] font-bold uppercase tracking-widest text-accent">{event.type} Product</p>
-                                        <span className="text-[9px] font-bold uppercase tracking-widest text-muted">{new Date(event.date).toLocaleDateString()} • {new Date(event.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                <div className="space-y-3 p-6 bg-zinc-50/30 border border-transparent hover:border-zinc-200 hover:bg-white transition-all hover:shadow-2xl hover-lift rounded-sm">
+                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                                        <p className="text-[11px] font-bold uppercase tracking-[0.3em] text-accent flex items-center space-x-3">
+                                            <span>{event.type} Product</span>
+                                            {event.type === 'purchased' && <Sparkles size={12} className="text-yellow-500" />}
+                                        </p>
+                                        <span className="text-[9px] font-bold uppercase tracking-widest text-muted/60 bg-white px-3 py-1 border border-zinc-100 rounded-full">
+                                            {new Date(event.date).toLocaleDateString()} • {new Date(event.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                        </span>
                                     </div>
-                                    <p className="text-sm font-medium">
-                                        {event.type === 'viewed' && 'Browsed '}
-                                        {event.type === 'cart' && 'Added '}
-                                        {event.type === 'reserved' && 'Placed reservation for '}
-                                        {event.type === 'purchased' && 'Successfully purchased '}
-                                        <span className="font-bold uppercase italic text-accent">{event.productName}</span>
+                                    <p className="text-base sm:text-lg font-medium leading-tight">
+                                        <span className="text-muted/70">
+                                            {event.type === 'viewed' && 'Browsed '}
+                                            {event.type === 'cart' && 'Added '}
+                                            {event.type === 'reserved' && 'Placed reservation for '}
+                                            {event.type === 'purchased' && 'Successfully purchased '}
+                                        </span>
+                                        <span className="font-bold uppercase italic text-black ml-1 underline decoration-accent/20 group-hover:decoration-accent transition-all">{event.productName}</span>
                                     </p>
+                                    <div className="pt-4 flex items-center space-x-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <Link href={`/products/${event.productId}`} className="text-[9px] font-bold uppercase tracking-widest text-muted hover:text-accent transition-colors flex items-center space-x-2">
+                                            <span>View Product</span>
+                                            <ChevronRight size={12} />
+                                        </Link>
+                                    </div>
                                 </div>
                             </div>
                         ))}

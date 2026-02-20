@@ -22,9 +22,9 @@ const OrderDetailPage = ({ params }: PageProps) => {
                 <div className="flex justify-center text-muted opacity-20">
                     <Info size={80} strokeWidth={1} />
                 </div>
-                <h1 className="text-3xl font-bold uppercase tracking-tighter italic">Order not found</h1>
+                <h1 className="text-3xl font-bold uppercase tracking-tighter italic">{t('orderNotFound')}</h1>
                 <Link href="/orders" className="bg-accent text-white px-8 py-4 inline-block font-bold uppercase tracking-widest text-xs shadow-xl">
-                    Back to History
+                    {t('backToHistory')}
                 </Link>
             </div>
         );
@@ -44,7 +44,7 @@ const OrderDetailPage = ({ params }: PageProps) => {
                         {t('orderHistory')}
                     </Link>
                     <div className="space-y-2">
-                        <p className="text-[10px] font-bold text-accent uppercase tracking-[0.4em]">Transaction Receipt</p>
+                        <p className="text-[10px] font-bold text-accent uppercase tracking-[0.4em]">{t('transactionReceipt')}</p>
                         <h1 className="text-4xl sm:text-6xl font-bold tracking-tighter uppercase italic leading-none underline decoration-accent/10">
                             {t('orderDetail')} <span className="text-accent ml-2 sm:ml-4">#{order.id}</span>
                         </h1>
@@ -56,7 +56,7 @@ const OrderDetailPage = ({ params }: PageProps) => {
                         {order.status}
                     </span>
                     <button className="flex-1 sm:flex-none px-8 py-3 bg-white border border-zinc-200 text-[10px] font-bold uppercase tracking-widest hover:bg-zinc-50 transition-colors">
-                        Invoice PDF
+                        {t('invoicePDF')}
                     </button>
                 </div>
             </div>
@@ -136,7 +136,7 @@ const OrderDetailPage = ({ params }: PageProps) => {
                             </div>
                             {mainItem?.courierName && (
                                 <div className="bg-zinc-50 px-6 py-3 border border-zinc-100 shadow-sm rounded-sm">
-                                    <p className="text-[9px] font-bold text-muted/60 uppercase tracking-widest mb-1">Global Tracking ID</p>
+                                    <p className="text-[9px] font-bold text-muted/60 uppercase tracking-widest mb-1">{t('globalTrackingId')}</p>
                                     <p className="text-[11px] font-bold text-accent tracking-[0.3em]">JNS-{order.id.split('-')[1]}00{id.length}</p>
                                 </div>
                             )}
@@ -173,8 +173,8 @@ const OrderDetailPage = ({ params }: PageProps) => {
                     {/* Order Items */}
                     <section className="space-y-10">
                         <h2 className="text-[11px] font-bold uppercase tracking-[0.4em] text-muted border-b border-zinc-100 pb-6 flex items-center justify-between">
-                            <span>Manifest Recap</span>
-                            <span className="bg-zinc-100 px-3 py-1 rounded-full text-[9px]">{order.items.length} Items</span>
+                            <span>{t('manifestRecap')}</span>
+                            <span className="bg-zinc-100 px-3 py-1 rounded-full text-[9px]">{order.items.length} {t('items')}</span>
                         </h2>
                         <div className="space-y-8 sm:space-y-10">
                             {order.items.map((item, idx) => {
@@ -209,7 +209,7 @@ const OrderDetailPage = ({ params }: PageProps) => {
                                                 {item.courierName && (
                                                     <div className="flex items-center space-x-2 text-green-600 bg-green-50 px-4 py-1.5 rounded-full border border-green-100">
                                                         <Truck size={12} />
-                                                        <span className="text-[9px] font-bold uppercase tracking-widest">{item.courierName} Active</span>
+                                                        <span className="text-[9px] font-bold uppercase tracking-widest">{item.courierName} {t('active')}</span>
                                                     </div>
                                                 )}
                                             </div>
@@ -241,7 +241,7 @@ const OrderDetailPage = ({ params }: PageProps) => {
                                 <span className="text-[11px] font-bold uppercase tracking-[0.3em] opacity-40 group-hover:opacity-100 transition-opacity">{t('shipping')}</span>
                                 <div className="flex items-center space-x-3">
                                     <span className="text-[10px] font-bold text-white/30 line-through uppercase">Rp 50.000</span>
-                                    <span className="text-accent uppercase font-bold text-[11px] tracking-[0.3em] bg-accent/10 px-3 py-1 rounded-full">FREE</span>
+                                    <span className="text-accent uppercase font-bold text-[11px] tracking-[0.3em] bg-accent/10 px-3 py-1 rounded-full">{t('free')}</span>
                                 </div>
                             </div>
                             <div className="flex justify-between items-end border-t border-white/10 pt-10">
@@ -273,7 +273,7 @@ const OrderDetailPage = ({ params }: PageProps) => {
                         <div className="space-y-6">
                             <div className="space-y-2">
                                 <p className="text-lg font-bold uppercase italic text-black leading-none">{user.name}</p>
-                                <p className="text-[10px] font-bold text-muted/60 uppercase tracking-widest">Primary Residence</p>
+                                <p className="text-[10px] font-bold text-muted/60 uppercase tracking-widest">{t('primaryResidence')}</p>
                             </div>
                             <div className="text-sm font-medium text-zinc-600 leading-relaxed space-y-2 font-serif opacity-80 group-hover:opacity-100 transition-opacity">
                                 <p>Jl. Jenderal Sudirman No. 123</p>
@@ -282,7 +282,7 @@ const OrderDetailPage = ({ params }: PageProps) => {
                             </div>
                         </div>
                         <button className="w-full py-4 border border-zinc-100 text-[10px] font-bold uppercase tracking-[0.3em] hover:bg-zinc-50 transition-colors">
-                            Report Redirection
+                            {t('reportRedirection')}
                         </button>
                     </div>
 
@@ -292,10 +292,10 @@ const OrderDetailPage = ({ params }: PageProps) => {
                         </div>
                         <div className="space-y-3">
                             <h4 className="text-[11px] font-bold uppercase tracking-[0.4em] text-accent">{t('help')}</h4>
-                            <p className="text-xs text-muted font-medium leading-relaxed max-w-[200px] mx-auto">Concierge service is ready for any delivery or payment inquiries.</p>
+                            <p className="text-xs text-muted font-medium leading-relaxed max-w-[200px] mx-auto">{t('conciergeReady')}</p>
                         </div>
                         <div className="pt-4 flex items-center justify-center space-x-3 text-accent text-[10px] font-bold uppercase tracking-[0.3em] opacity-60 group-hover:opacity-100 transition-opacity">
-                            <span className="border-b border-accent/20">Open High-Priority Ticket</span>
+                            <span className="border-b border-accent/20">{t('openHighPriority')}</span>
                             <ChevronRight size={14} className="group-hover:translate-x-2 transition-transform" />
                         </div>
                     </div>

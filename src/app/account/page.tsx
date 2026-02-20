@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { useDemo } from '@/context/DemoContext';
 import { PRODUCTS } from '@/lib/data';
-import { User as UserIcon, Mail, Phone, Calendar, ShoppingCart, Eye, Package, MapPin, History, Sparkles, ChevronRight } from 'lucide-react';
+import { User as UserIcon, Mail, Phone, ShoppingCart, Eye, Package, MapPin, History, Sparkles, ChevronRight } from 'lucide-react';
 
 const AccountPage = () => {
     const { user, timeline, t } = useDemo();
@@ -62,7 +62,7 @@ const AccountPage = () => {
                                 </div>
                             </div>
                             <button className="bg-white border border-zinc-200 text-accent w-full py-4 text-[10px] font-bold uppercase tracking-[0.3em] hover:bg-accent hover:text-white transition-all shadow-sm relative z-10">
-                                Edit Member Profile
+                                {t('editProfile')}
                             </button>
                         </div>
                     </section>
@@ -88,18 +88,18 @@ const AccountPage = () => {
                     <div className="flex items-center justify-between border-b border-zinc-100 pb-4">
                         <div className="space-y-1">
                             <h2 className="text-2xl sm:text-3xl font-bold uppercase tracking-tighter italic">{t('journeyTimeline')}</h2>
-                            <p className="text-[10px] font-bold text-muted uppercase tracking-[0.3em]">Your complete brand experience sequence</p>
+                            <p className="text-[10px] font-bold text-muted uppercase tracking-[0.3em]">{t('journeySequence')}</p>
                         </div>
                         <div className="flex items-center space-x-2 bg-black text-white px-4 py-2 rounded-full shadow-lg">
                             <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
-                            <span className="text-[9px] font-bold uppercase tracking-widest">LIVE SYNC</span>
+                            <span className="text-[9px] font-bold uppercase tracking-widest">{t('liveSync')}</span>
                         </div>
                     </div>
 
                     <div className="relative border-l-2 border-zinc-100 ml-5 mt-16 space-y-12 sm:space-y-16 pb-10">
                         {timeline.length === 0 && (
                             <div className="pl-12 py-10 bg-zinc-50 border border-dashed border-zinc-200 text-muted text-xs font-bold uppercase italic tracking-widest text-center">
-                                No interactions recorded. <br />Start browsing to build your journey.
+                                {t('noInteractions')} <br />{t('startBrowsing')}
                             </div>
                         )}
                         {timeline.map((event, index) => (
@@ -112,7 +112,7 @@ const AccountPage = () => {
                                 <div className="space-y-3 p-6 bg-zinc-50/30 border border-transparent hover:border-zinc-200 hover:bg-white transition-all hover:shadow-2xl hover-lift rounded-sm">
                                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                                         <p className="text-[11px] font-bold uppercase tracking-[0.3em] text-accent flex items-center space-x-3">
-                                            <span>{event.type} Product</span>
+                                            <span>{event.type} {t('product')}</span>
                                             {event.type === 'purchased' && <Sparkles size={12} className="text-yellow-500" />}
                                         </p>
                                         <span className="text-[9px] font-bold uppercase tracking-widest text-muted/60 bg-white px-3 py-1 border border-zinc-100 rounded-full">
@@ -121,16 +121,16 @@ const AccountPage = () => {
                                     </div>
                                     <p className="text-base sm:text-lg font-medium leading-tight">
                                         <span className="text-muted/70">
-                                            {event.type === 'viewed' && 'Browsed '}
-                                            {event.type === 'cart' && 'Added '}
-                                            {event.type === 'reserved' && 'Placed reservation for '}
-                                            {event.type === 'purchased' && 'Successfully purchased '}
+                                            {event.type === 'viewed' && t('browsed')}
+                                            {event.type === 'cart' && t('added')}
+                                            {event.type === 'reserved' && t('placedReservationFor')}
+                                            {event.type === 'purchased' && t('successfullyPurchased')}
                                         </span>
-                                        <span className="font-bold uppercase italic text-black ml-1 underline decoration-accent/20 group-hover:decoration-accent transition-all">{event.productName}</span>
+                                        <span className="font-bold uppercase italic text-black ml-1 underline decoration-accent/20 group-hover:decoration-accent transition-all"> {event.productName}</span>
                                     </p>
                                     <div className="pt-4 flex items-center space-x-4 opacity-0 group-hover:opacity-100 transition-opacity">
                                         <Link href={`/products/${event.productId}`} className="text-[9px] font-bold uppercase tracking-widest text-muted hover:text-accent transition-colors flex items-center space-x-2">
-                                            <span>View Product</span>
+                                            <span>{t('viewProduct')}</span>
                                             <ChevronRight size={12} />
                                         </Link>
                                     </div>

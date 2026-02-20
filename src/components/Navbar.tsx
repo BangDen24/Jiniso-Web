@@ -30,9 +30,9 @@ const Navbar = () => {
     ];
 
     const languages: { code: typeof lang; label: string }[] = [
-        { code: 'ID', label: 'Indo' },
-        { code: 'EN', label: 'English' },
-        { code: 'JP', label: '日本語' },
+        { code: 'ID', label: t('langIndo') },
+        { code: 'EN', label: t('langEng') },
+        { code: 'JP', label: t('langJp') },
     ];
 
     return (
@@ -139,7 +139,7 @@ const Navbar = () => {
                                 className="hidden sm:flex items-center space-x-2 text-xs font-bold uppercase tracking-wider text-accent border border-accent/20 px-4 py-2 hover:bg-accent hover:text-white transition-all shadow-sm"
                             >
                                 <LogIn size={16} />
-                                <span>Join Demo</span>
+                                <span>{t('joinDemo')}</span>
                             </button>
                         ) : (
                             <div className="flex items-center space-x-4 sm:space-x-6">

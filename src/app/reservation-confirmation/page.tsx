@@ -7,7 +7,7 @@ import { useDemo } from '@/context/DemoContext';
 import { PRODUCTS, STORES } from '@/lib/data';
 
 const ReservationConfirmationPage = () => {
-    const { user } = useDemo();
+    const { user, t } = useDemo();
 
     const reservation = user && user.reservations.length > 0
         ? user.reservations[user.reservations.length - 1]
@@ -25,8 +25,8 @@ const ReservationConfirmationPage = () => {
             </div>
 
             <div className="space-y-2">
-                <h1 className="text-3xl font-medium tracking-tight">Reservation Confirmed</h1>
-                <p className="text-muted">Your item has been set aside for you. See you soon!</p>
+                <h1 className="text-3xl font-medium tracking-tight">{t('reservationConfirmed')}</h1>
+                <p className="text-muted">{t('reservationConfirmedDesc')}</p>
             </div>
 
             {reservation && product && store && (
@@ -36,12 +36,12 @@ const ReservationConfirmationPage = () => {
                             <img src={product.image} alt={product.name} className="w-20 h-24 object-cover rounded" />
                             <div>
                                 <h2 className="font-medium">{product.name}</h2>
-                                <p className="text-sm text-muted">Ref: {reservation.productId}-{Date.now().toString().slice(-4)}</p>
+                                <p className="text-sm text-muted">{t('ref')}: {reservation.productId}-{Date.now().toString().slice(-4)}</p>
                             </div>
                         </div>
                         <div className="text-right">
-                            <p className="text-xs font-semibold uppercase tracking-widest text-muted mb-1">Status</p>
-                            <span className="text-xs px-2 py-1 bg-zinc-100 rounded underline decoration-accent/30">Awaiting Pickup</span>
+                            <p className="text-xs font-semibold uppercase tracking-widest text-muted mb-1">{t('status')}</p>
+                            <span className="text-xs px-2 py-1 bg-zinc-100 rounded underline decoration-accent/30">{t('awaitingPickup')}</span>
                         </div>
                     </div>
 
@@ -59,7 +59,7 @@ const ReservationConfirmationPage = () => {
                             <div className="flex items-start space-x-3">
                                 <Calendar size={18} className="text-muted mt-0.5" />
                                 <div>
-                                    <p className="font-medium">Valid until</p>
+                                    <p className="font-medium">{t('validUntil')}</p>
                                     <p className="text-muted text-xs leading-relaxed">
                                         {new Date(new Date(reservation.date).getTime() + 24 * 60 * 60 * 1000).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}
                                     </p>
@@ -72,10 +72,10 @@ const ReservationConfirmationPage = () => {
 
             <div className="flex flex-col sm:flex-row justify-center gap-4 pt-8">
                 <Link href="/" className="btn-primary px-8">
-                    Go to Home
+                    {t('goToHome')}
                 </Link>
                 <Link href="/products" className="btn-secondary px-8 flex items-center justify-center">
-                    <span>Continue Shopping</span>
+                    <span>{t('continueShopping')}</span>
                     <ArrowRight size={16} className="ml-2" />
                 </Link>
             </div>

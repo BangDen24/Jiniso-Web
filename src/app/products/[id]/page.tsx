@@ -125,7 +125,7 @@ const ProductDetailPage = ({ params }: PageProps) => {
                             <div className="flex items-center space-x-2 text-yellow-500 bg-zinc-50 px-3 py-1.5 rounded-full border border-zinc-100 w-fit">
                                 <Star size={14} fill="currentColor" />
                                 <span className="text-xs font-bold text-black">{averageRating}</span>
-                                <span className="text-[10px] text-muted font-medium">({productReviews.length} Reviews)</span>
+                                <span className="text-[10px] text-muted font-medium">({productReviews.length} {t('customerReviews')})</span>
                             </div>
                         </div>
                         <div className="space-y-4">
@@ -143,7 +143,7 @@ const ProductDetailPage = ({ params }: PageProps) => {
 
                     <div className="space-y-8 sm:space-y-10 bg-zinc-50/50 p-6 sm:p-10 border border-zinc-100 rounded-sm">
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-                            <span className="text-[11px] font-bold uppercase tracking-[0.3em] text-accent">Select Quantity</span>
+                            <span className="text-[11px] font-bold uppercase tracking-[0.3em] text-accent">{t('selectQuantity')}</span>
                             <div className="flex items-center bg-white shadow-sm border border-zinc-200">
                                 <button onClick={() => setSelectedQuantity(Math.max(1, selectedQuantity - 1))} className="w-12 h-12 flex items-center justify-center hover:bg-zinc-50 border-r transition-colors text-lg font-bold">-</button>
                                 <span className="w-16 h-12 flex items-center justify-center font-bold text-sm sm:text-base">{selectedQuantity}</span>
@@ -169,7 +169,7 @@ const ProductDetailPage = ({ params }: PageProps) => {
                         </div>
 
                         <p className="text-[10px] text-center text-muted font-bold uppercase tracking-widest opacity-60">
-                            Free shipping on orders over Rp 1.000.000
+                            {t('freeShippingOnOrders')}
                         </p>
                     </div>
 
@@ -190,9 +190,9 @@ const ProductDetailPage = ({ params }: PageProps) => {
                                         </div>
                                         <div className="flex justify-between items-end">
                                             <span className={`text-[10px] sm:text-[11px] font-bold uppercase tracking-tight ${stock > 0 ? 'text-accent' : 'text-muted'}`}>
-                                                {stock > 0 ? `${stock} Pieces left` : 'Out of stock'}
+                                                {stock > 0 ? `${stock} ${t('piecesLeft')}` : t('outOfStock')}
                                             </span>
-                                            <span className="text-[9px] text-muted opacity-40 uppercase font-bold tracking-widest">Store Inventory</span>
+                                            <span className="text-[9px] text-muted opacity-40 uppercase font-bold tracking-widest">{t('storeInventory')}</span>
                                         </div>
                                     </div>
                                 );
@@ -220,7 +220,7 @@ const ProductDetailPage = ({ params }: PageProps) => {
                         <div className="flex items-center space-x-3">
                             <span className="text-3xl font-bold italic">{averageRating}</span>
                             <div className="h-8 w-[1px] bg-zinc-300" />
-                            <span className="text-[10px] font-bold text-muted uppercase tracking-[0.2em] max-w-[80px]">Verified Consensus</span>
+                            <span className="text-[10px] font-bold text-muted uppercase tracking-[0.2em] max-w-[80px]">{t('verifiedConsensus')}</span>
                         </div>
                     </div>
                 </div>
@@ -236,14 +236,14 @@ const ProductDetailPage = ({ params }: PageProps) => {
                                     </div>
                                     <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted/60">{review.date}</p>
                                 </div>
-                                <span className="text-[9px] font-bold uppercase tracking-[0.3em] bg-zinc-50 px-4 py-1.5 border border-zinc-200 rounded-full text-zinc-500">Verified Buyer</span>
+                                <span className="text-[9px] font-bold uppercase tracking-[0.3em] bg-zinc-50 px-4 py-1.5 border border-zinc-200 rounded-full text-zinc-500">{t('verifiedBuyer')}</span>
                             </div>
                             <p className="text-xl sm:text-2xl italic font-medium leading-relaxed font-serif text-zinc-800">"{review.content}"</p>
                             <div className="pt-8 border-t border-zinc-100 flex items-center justify-between">
                                 <span className="font-bold uppercase tracking-[0.4em] text-[11px] text-accent">— {review.user}</span>
                                 <div className="flex items-center space-x-2 text-green-600">
                                     <Check size={12} />
-                                    <span className="text-[9px] font-bold uppercase tracking-widest">Recommended</span>
+                                    <span className="text-[9px] font-bold uppercase tracking-widest">{t('recommended')}</span>
                                 </div>
                             </div>
                         </div>
@@ -258,8 +258,8 @@ const ProductDetailPage = ({ params }: PageProps) => {
                     <div className="premium-card relative w-full max-w-xl p-8 sm:p-16 space-y-12 shadow-3xl bg-white border-none animate-fade-in-up">
                         <div className="flex justify-between items-center border-b border-zinc-100 pb-8">
                             <div className="space-y-2">
-                                <h2 className="text-4xl font-bold uppercase tracking-tighter italic leading-none">Select Store</h2>
-                                <p className="text-[11px] text-muted font-bold uppercase tracking-[0.3em]">Choose your Fitting Destination</p>
+                                <h2 className="text-4xl font-bold uppercase tracking-tighter italic leading-none">{t('selectStore')}</h2>
+                                <p className="text-[11px] text-muted font-bold uppercase tracking-[0.3em]">{t('chooseFittingDestination')}</p>
                             </div>
                             <button onClick={() => setIsModalOpen(false)} className="text-muted hover:text-accent transition-all hover:rotate-90">
                                 <X size={32} />
@@ -289,11 +289,11 @@ const ProductDetailPage = ({ params }: PageProps) => {
                                         <div className="flex flex-col items-end">
                                             {stock > 0 ? (
                                                 <>
-                                                    <span className="text-[10px] font-bold text-accent uppercase tracking-widest">{stock} IN STOCK</span>
+                                                    <span className="text-[10px] font-bold text-accent uppercase tracking-widest">{stock} {t('inStock').toUpperCase()}</span>
                                                     <ChevronRight size={20} className="text-accent mt-2" />
                                                 </>
                                             ) : (
-                                                <span className="text-[10px] font-bold text-red-400 uppercase tracking-widest">OUT OF STOCK</span>
+                                                <span className="text-[10px] font-bold text-red-400 uppercase tracking-widest">{t('outOfStock').toUpperCase()}</span>
                                             )}
                                         </div>
                                     </button>
@@ -302,7 +302,7 @@ const ProductDetailPage = ({ params }: PageProps) => {
                         </div>
 
                         <p className="text-[10px] text-center text-muted font-bold uppercase tracking-[0.2em] opacity-40 leading-relaxed">
-                            Reservations are held for 24 hours only. <br />Identification required at pickup.
+                            {t('reservationHeld')}
                         </p>
                     </div>
                 </div>

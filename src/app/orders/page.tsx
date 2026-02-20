@@ -34,11 +34,11 @@ const OrdersPage = () => {
                     <Package size={60} className="text-accent opacity-20" strokeWidth={1} />
                 </div>
                 <div className="space-y-3">
-                    <h1 className="text-3xl sm:text-4xl font-bold uppercase tracking-tighter italic">No orders yet</h1>
-                    <p className="text-muted font-medium text-sm sm:text-base max-w-sm mx-auto">Explore our collection and start your premium fashion journey today.</p>
+                    <h1 className="text-3xl sm:text-4xl font-bold uppercase tracking-tighter italic">{t('noOrders')}</h1>
+                    <p className="text-muted font-medium text-sm sm:text-base max-w-sm mx-auto">{t('startPremiumJourney')}</p>
                 </div>
                 <Link href="/products" className="bg-accent text-white px-10 py-5 font-bold uppercase tracking-[0.2em] inline-block shadow-2xl hover:bg-dark-accent transition-all">
-                    Start Shopping
+                    {t('startShopping')}
                 </Link>
             </div>
         );
@@ -94,7 +94,7 @@ const OrdersPage = () => {
                                     </div>
                                     <p className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-muted flex items-center">
                                         <Clock size={12} className="mr-2" />
-                                        Ordered on {new Date(order.date).toLocaleDateString()}
+                                        {t('orderedOn')} {new Date(order.date).toLocaleDateString()}
                                     </p>
                                 </div>
                                 <Link
@@ -129,7 +129,7 @@ const OrdersPage = () => {
                                                             className="flex items-center space-x-2 text-[10px] font-bold uppercase tracking-[0.3em] text-accent p-2 -m-2 hover:bg-accent/5 transition-all w-fit rounded-sm shine-effect"
                                                         >
                                                             <Truck size={16} />
-                                                            <span className="border-b-2 border-accent/20">Quick Track Shipment</span>
+                                                            <span className="border-b-2 border-accent/20">{t('quickTrack')}</span>
                                                         </button>
                                                     )}
                                                 </div>
@@ -146,23 +146,23 @@ const OrdersPage = () => {
                                 <div className="p-6 bg-zinc-50 border border-zinc-100 hover:bg-white hover:border-accent/20 hover:shadow-xl transition-all hover-lift">
                                     <h4 className="flex items-center space-x-3 text-[10px] font-bold uppercase tracking-[0.2em] text-accent mb-4">
                                         <Heart size={16} className="pulse-accent" />
-                                        <span>Care Instructions</span>
+                                        <span>{t('careInstructions')}</span>
                                     </h4>
-                                    <p className="text-xs font-medium text-muted leading-relaxed">Ensure longevity: Wash in cold water and air dry to maintain fabric integrity and fit.</p>
+                                    <p className="text-xs font-medium text-muted leading-relaxed">{t('ensureLongevity')}</p>
                                 </div>
                                 <div className="p-6 bg-zinc-50 border border-zinc-100 hover:bg-white hover:border-accent/20 hover:shadow-xl transition-all hover-lift">
                                     <h4 className="flex items-center space-x-3 text-[10px] font-bold uppercase tracking-[0.2em] text-accent mb-4">
                                         <RefreshCw size={16} />
-                                        <span>30-Day Support</span>
+                                        <span>{t('support30Day')}</span>
                                     </h4>
-                                    <p className="text-xs font-medium text-muted leading-relaxed">Our experts are ready to assist with sizing or exchange queries via WhatsApp support.</p>
+                                    <p className="text-xs font-medium text-muted leading-relaxed">{t('expertAssist')}</p>
                                 </div>
                                 <div className="p-6 bg-accent text-white hover-lift shadow-lg">
                                     <h4 className="flex items-center space-x-3 text-[10px] font-bold uppercase tracking-[0.2em] mb-4">
                                         <Sparkles size={16} />
-                                        <span>Complete the Look</span>
+                                        <span>{t('completeLook')}</span>
                                     </h4>
-                                    <p className="text-xs font-medium leading-relaxed opacity-90">Unlock personalized pairing recommendations in your rewards dashboard.</p>
+                                    <p className="text-xs font-medium leading-relaxed opacity-90">{t('unlockPairing')}</p>
                                 </div>
                             </div>
                         )}
@@ -171,14 +171,14 @@ const OrdersPage = () => {
                     <div className="py-24 text-center space-y-6 bg-zinc-50 border border-dashed border-zinc-200 rounded-lg animate-fade-in uppercase">
                         <Search size={60} className="mx-auto text-muted/20" strokeWidth={1} />
                         <div className="space-y-2">
-                            <h3 className="text-xl font-bold tracking-tighter italic">No Matches Found</h3>
-                            <p className="text-muted text-sm font-medium">We couldn't find any orders matching "{searchQuery}"</p>
+                            <h3 className="text-xl font-bold tracking-tighter italic">{t('noMatches')}</h3>
+                            <p className="text-muted text-sm font-medium">{t('noOrdersFoundMatching')} "{searchQuery}"</p>
                         </div>
                         <button
                             onClick={() => setSearchQuery('')}
                             className="text-xs font-bold tracking-[0.4em] text-accent underline mt-4 hover:opacity-70 transition-opacity"
                         >
-                            Clear search
+                            {t('clearSearch')}
                         </button>
                     </div>
                 )}
@@ -191,10 +191,10 @@ const OrdersPage = () => {
                     <div className="premium-card relative w-full max-w-2xl bg-white p-6 sm:p-12 space-y-10 shadow-3xl border-none max-h-[90vh] overflow-y-auto animate-fade-in-up">
                         <div className="flex justify-between items-start border-b border-zinc-100 pb-8">
                             <div className="space-y-3">
-                                <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-accent">Shipment Progress</span>
+                                <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-accent">{t('shipmentProgress')}</span>
                                 <h2 className="text-3xl sm:text-4xl font-bold tracking-tighter uppercase italic leading-none">{trackingItemName}</h2>
                                 {trackingInfo.courier && (
-                                    <p className="text-[10px] text-muted font-bold uppercase tracking-widest bg-zinc-50 px-3 py-1 border border-zinc-100 w-fit">Courier: {trackingInfo.courier}</p>
+                                    <p className="text-[10px] text-muted font-bold uppercase tracking-widest bg-zinc-50 px-3 py-1 border border-zinc-100 w-fit">{t('courierLabel')}: {trackingInfo.courier}</p>
                                 )}
                             </div>
                             <button onClick={() => setSelectedTracking(null)} className="text-muted hover:text-accent transition-all p-2 hover:rotate-90">
@@ -245,12 +245,12 @@ const OrdersPage = () => {
                             <div className="flex items-center space-x-3">
                                 <CheckCircle2 className="text-green-500" size={24} />
                                 <div className="space-y-1">
-                                    <p className="text-[9px] font-bold uppercase tracking-widest text-muted">Estimated Delivery</p>
+                                    <p className="text-[9px] font-bold uppercase tracking-widest text-muted">{t('estimatedDelivery')}</p>
                                     <p className="font-bold text-sm tracking-tight">{trackingInfo.arrival || 'Calculated at Warehouse'}</p>
                                 </div>
                             </div>
                             <button className="w-full sm:w-auto px-8 py-4 bg-zinc-900 text-white text-[10px] font-bold uppercase tracking-[0.3em] hover:bg-black transition-all shadow-xl">
-                                Full Tracking History
+                                {t('fullTrackingHistory')}
                             </button>
                         </div>
                     </div>

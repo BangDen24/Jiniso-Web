@@ -14,7 +14,7 @@ const ProductsList = () => {
     const activeType = searchParams.get('type');
     const urlSearch = searchParams.get('search');
     const [searchQuery, setSearchQuery] = useState(urlSearch || '');
-    const [sortBy, setSortBy] = useState('Featured');
+    const [sortBy, setSortBy] = useState(t('sortFeatured'));
     const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
     const mainCategories = [
@@ -53,9 +53,9 @@ const ProductsList = () => {
             );
         }
 
-        if (sortBy === 'Price: Low to High') {
+        if (sortBy === t('sortPriceLowHigh')) {
             result.sort((a, b) => a.price - b.price);
-        } else if (sortBy === 'Price: High to Low') {
+        } else if (sortBy === t('sortPriceHighLow')) {
             result.sort((a, b) => b.price - a.price);
         }
 
@@ -67,7 +67,7 @@ const ProductsList = () => {
             {/* Breadcrumbs & Title */}
             <section className="space-y-4 sm:space-y-6">
                 <div className="flex items-center space-x-2 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-muted">
-                    <Link href="/" className="hover:text-accent transition-colors">Home</Link>
+                    <Link href="/" className="hover:text-accent transition-colors">{t('home')}</Link>
                     <span>/</span>
                     <Link href="/products" className={!activeCategory ? 'text-accent' : 'hover:text-accent transition-colors'}>{t('collection')}</Link>
                     {activeCategory && activeCategory !== 'All' && (
@@ -97,7 +97,7 @@ const ProductsList = () => {
                 {/* Sidebar Filters (Desktop) / Mobile Toggle */}
                 <aside className="lg:w-64 flex-shrink-0 space-y-10 hidden lg:block border-r border-zinc-100 pr-8">
                     <div className="space-y-6">
-                        <h3 className="text-[11px] font-bold uppercase tracking-[0.3em] text-accent border-b border-accent/20 pb-2">Collections</h3>
+                        <h3 className="text-[11px] font-bold uppercase tracking-[0.3em] text-accent border-b border-accent/20 pb-2">{t('collections')}</h3>
                         <div className="flex flex-col space-y-3">
                             {mainCategories.map(cat => (
                                 <Link
@@ -115,7 +115,7 @@ const ProductsList = () => {
                     </div>
 
                     <div className="space-y-6">
-                        <h3 className="text-[11px] font-bold uppercase tracking-[0.3em] text-accent border-b border-accent/20 pb-2">Category</h3>
+                        <h3 className="text-[11px] font-bold uppercase tracking-[0.3em] text-accent border-b border-accent/20 pb-2">{t('category')}</h3>
                         <div className="flex flex-col space-y-3">
                             <Link
                                 href={`/products${activeCategory ? `?category=${activeCategory}` : ''}`}
@@ -145,7 +145,7 @@ const ProductsList = () => {
                                 className="flex items-center space-x-2 text-[10px] font-bold uppercase tracking-widest text-red-500 hover:text-red-600 transition-colors"
                             >
                                 <X size={14} />
-                                <span>Clear Filters</span>
+                                <span>{t('clearFilters')}</span>
                             </button>
                         </div>
                     )}
@@ -158,15 +158,15 @@ const ProductsList = () => {
                         className="flex items-center space-x-2 px-4 py-2 bg-zinc-900 text-white rounded-full text-[10px] font-bold uppercase tracking-widest flex-shrink-0"
                     >
                         <Filter size={14} />
-                        <span>Filter</span>
+                        <span>{t('filters')}</span>
                     </button>
                     {mainCategories.map(cat => (
                         <Link
                             key={cat.id}
                             href={cat.id === 'All' ? '/products' : `/products?category=${cat.id}`}
                             className={`px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest flex-shrink-0 border transition-all ${(activeCategory === cat.id || (!activeCategory && cat.id === 'All'))
-                                    ? 'bg-accent border-accent text-white shadow-lg'
-                                    : 'bg-white border-zinc-200 text-muted'
+                                ? 'bg-accent border-accent text-white shadow-lg'
+                                : 'bg-white border-zinc-200 text-muted'
                                 }`}
                         >
                             {cat.label}
@@ -178,12 +178,12 @@ const ProductsList = () => {
                 {isMobileFilterOpen && (
                     <div className="fixed inset-0 z-[100] bg-white lg:hidden">
                         <div className="p-6 border-b flex justify-between items-center shadow-sm sticky top-0 bg-white">
-                            <h2 className="text-xl font-bold uppercase italic tracking-tighter">Filters</h2>
+                            <h2 className="text-xl font-bold uppercase italic tracking-tighter">{t('filters')}</h2>
                             <button onClick={() => setIsMobileFilterOpen(false)} className="p-2"><X size={24} /></button>
                         </div>
                         <div className="p-8 space-y-10 overflow-y-auto h-[calc(100vh-80px)]">
                             <div className="space-y-6">
-                                <h3 className="text-xs font-bold uppercase tracking-[0.3em] text-accent">Collections</h3>
+                                <h3 className="text-xs font-bold uppercase tracking-[0.3em] text-accent">{t('collections')}</h3>
                                 <div className="grid grid-cols-2 gap-3">
                                     {mainCategories.map(cat => (
                                         <Link
@@ -191,8 +191,8 @@ const ProductsList = () => {
                                             href={cat.id === 'All' ? '/products' : `/products?category=${cat.id}`}
                                             onClick={() => setIsMobileFilterOpen(false)}
                                             className={`p-4 border text-[10px] font-bold uppercase tracking-widest text-center transition-all ${(activeCategory === cat.id || (!activeCategory && cat.id === 'All'))
-                                                    ? 'bg-accent border-accent text-white'
-                                                    : 'border-zinc-100 text-muted'
+                                                ? 'bg-accent border-accent text-white'
+                                                : 'border-zinc-100 text-muted'
                                                 }`}
                                         >
                                             {cat.label}
@@ -201,7 +201,7 @@ const ProductsList = () => {
                                 </div>
                             </div>
                             <div className="space-y-6">
-                                <h3 className="text-xs font-bold uppercase tracking-[0.3em] text-accent">Categories</h3>
+                                <h3 className="text-xs font-bold uppercase tracking-[0.3em] text-accent">{t('category')}</h3>
                                 <div className="grid grid-cols-2 gap-3">
                                     {subCategories.map(sub => (
                                         <Link
@@ -209,8 +209,8 @@ const ProductsList = () => {
                                             href={`/products?type=${sub.id}${activeCategory ? `&category=${activeCategory}` : ''}`}
                                             onClick={() => setIsMobileFilterOpen(false)}
                                             className={`p-4 border text-[10px] font-bold uppercase tracking-widest text-center transition-all ${activeType === sub.id
-                                                    ? 'bg-accent border-accent text-white'
-                                                    : 'border-zinc-100 text-muted'
+                                                ? 'bg-accent border-accent text-white'
+                                                : 'border-zinc-100 text-muted'
                                                 }`}
                                         >
                                             {sub.label}
@@ -287,14 +287,14 @@ const ProductsList = () => {
                                 <Search size={80} strokeWidth={1} />
                             </div>
                             <div className="space-y-3">
-                                <h2 className="text-2xl font-bold uppercase tracking-tighter italic">No Items Found</h2>
-                                <p className="text-muted text-sm font-medium">We couldn't find anything matching your current filters.</p>
+                                <h2 className="text-2xl font-bold uppercase tracking-tighter italic">{t('noItemsFound')}</h2>
+                                <p className="text-muted text-sm font-medium">{t('noItemsFoundDesc')}</p>
                             </div>
                             <button
                                 onClick={() => window.location.href = '/products'}
                                 className="bg-accent text-white px-10 py-4 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-dark-accent transition-all shadow-xl"
                             >
-                                Reset Collection
+                                {t('resetCollection')}
                             </button>
                         </div>
                     )}

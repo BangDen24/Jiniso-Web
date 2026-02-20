@@ -51,7 +51,7 @@ export default function Home() {
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-white space-y-6 sm:space-y-8">
-          <span className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.4em] opacity-80 animate-fade-in-up">Seasonal Collection 2026</span>
+          <span className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.4em] opacity-80 animate-fade-in-up">{t('seasonalCollection')}</span>
           <h1 className="text-5xl sm:text-7xl md:text-9xl font-bold tracking-tighter uppercase italic leading-[0.9] animate-fade-in-up delay-100">
             {t('lifeWearTitle')}
           </h1>
@@ -224,8 +224,8 @@ export default function Home() {
                   <span className="text-[10px] font-bold uppercase tracking-[0.4em] opacity-80">{t('bagSummary')}</span>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-3xl sm:text-4xl font-bold tracking-tighter italic">{cartItems.length} ITEMS</p>
-                  <p className="text-[10px] font-bold uppercase tracking-widest opacity-60">Ready for checkout</p>
+                  <p className="text-3xl sm:text-4xl font-bold tracking-tighter italic">{cartItems.length} {t('items').toUpperCase()}</p>
+                  <p className="text-[10px] font-bold uppercase tracking-widest opacity-60">{t('readyForCheckout')}</p>
                 </div>
                 <Link href="/cart" className="bg-white text-accent w-full py-4 block text-center text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-zinc-100 transition-all">
                   {t('reviewCheckout')}

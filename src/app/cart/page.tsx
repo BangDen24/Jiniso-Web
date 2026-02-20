@@ -47,7 +47,7 @@ const CartPage = () => {
 
     const handleCheckout = () => {
         checkout();
-        alert('Thank you for your order! This demo has transitioned your cart items to order history.');
+        alert(t('thankYouOrder'));
         router.push('/orders');
     };
 
@@ -119,19 +119,19 @@ const CartPage = () => {
 
                         <div className="space-y-6">
                             <div className="flex justify-between items-center group">
-                                <span className="text-[11px] font-bold uppercase tracking-[0.3em] text-muted group-hover:text-black transition-colors">Subtotal ({cartDetails.length} Items)</span>
+                                <span className="text-[11px] font-bold uppercase tracking-[0.3em] text-muted group-hover:text-black transition-colors">{t('subtotalWithItems').replace('{count}', cartDetails.length.toString())}</span>
                                 <span className="font-bold text-lg italic tracking-tight">Rp {total.toLocaleString()}</span>
                             </div>
                             <div className="flex justify-between items-center group">
                                 <span className="text-[11px] font-bold uppercase tracking-[0.3em] text-muted group-hover:text-black transition-colors">{t('standardShipping')}</span>
                                 <div className="flex items-center space-x-3">
                                     <span className="text-[10px] font-bold text-muted line-through opacity-50 uppercase tracking-widest">Rp 50.000</span>
-                                    <span className="text-accent uppercase font-bold text-[11px] tracking-[0.3em] bg-accent/5 px-3 py-1 rounded-full animate-pulse">Free</span>
+                                    <span className="text-accent uppercase font-bold text-[11px] tracking-[0.3em] bg-accent/5 px-3 py-1 rounded-full animate-pulse">{t('free')}</span>
                                 </div>
                             </div>
                             <div className="pt-8 border-t border-zinc-100 flex justify-between items-center text-2xl font-bold text-zinc-900 italic">
                                 <div className="flex items-center space-x-3">
-                                    <span className="uppercase tracking-widest text-[11px] not-italic text-muted mb-0.5">Total</span>
+                                    <span className="uppercase tracking-widest text-[11px] not-italic text-muted mb-0.5">{t('total')}</span>
                                     <div className="h-6 w-[1px] bg-zinc-200" />
                                 </div>
                                 <span className="tracking-tighter">Rp {total.toLocaleString()}</span>

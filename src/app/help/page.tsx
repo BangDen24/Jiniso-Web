@@ -39,11 +39,22 @@ const FAQItem: React.FC<FAQItemProps> = ({ question, answer, isOpen, onClick }) 
 };
 
 export default function HelpPage() {
-    const { t } = useDemo();
+    const { t, setIsChatOpen } = useDemo();
     const [openIndex, setOpenIndex] = useState<number | null>(0); // First item open by default
 
     const toggleAccordion = (index: number) => {
         setOpenIndex(openIndex === index ? null : index);
+    };
+
+    const handleCategoryClick = (sectionIdx: number) => {
+        const flatIndex = sectionIdx * 10;
+        setOpenIndex(flatIndex);
+
+        const element = document.getElementById(`faq-section-${sectionIdx}`);
+        if (element) {
+            const y = element.getBoundingClientRect().top + window.scrollY - 100;
+            window.scrollTo({ top: y, behavior: 'smooth' });
+        }
     };
 
     const faqSections = [
@@ -116,7 +127,7 @@ export default function HelpPage() {
                             <h3 className="text-lg font-bold uppercase tracking-tight italic mb-6 border-b border-zinc-100 pb-4">Categories</h3>
                             <div className="space-y-4">
                                 {faqSections.map((section, idx) => (
-                                    <div key={idx} className="flex items-center space-x-3 text-sm font-bold text-muted hover:text-accent transition-colors cursor-pointer group">
+                                    <div key={idx} onClick={() => handleCategoryClick(idx)} className="flex items-center space-x-3 text-sm font-bold text-muted hover:text-accent transition-colors cursor-pointer group">
                                         <div className="w-8 h-8 rounded-full bg-zinc-50 flex items-center justify-center group-hover:bg-accent/10 transition-colors">
                                             {section.icon}
                                         </div>
@@ -127,7 +138,7 @@ export default function HelpPage() {
 
                             <div className="mt-10 pt-6 border-t border-zinc-100 space-y-4">
                                 <p className="text-xs font-bold text-zinc-900 uppercase tracking-widest">Still need help?</p>
-                                <button className="w-full py-3 bg-zinc-900 text-white text-[10px] font-bold uppercase tracking-[0.2em] rounded-full hover:bg-accent transition-all">
+                                <button onClick={() => setIsChatOpen(true)} className="w-full py-3 bg-zinc-900 text-white text-[10px] font-bold uppercase tracking-[0.2em] rounded-full hover:bg-accent transition-all">
                                     {t('chatHuman')}
                                 </button>
                             </div>
@@ -139,6 +150,7 @@ export default function HelpPage() {
                         {faqSections.map((section, sectionIdx) => (
                             <div
                                 key={sectionIdx}
+                                id={`faq-section-${sectionIdx}`}
                                 className="space-y-6 animate-fade-in-up"
                                 style={{ animationDelay: `${sectionIdx * 100}ms` }}
                             >

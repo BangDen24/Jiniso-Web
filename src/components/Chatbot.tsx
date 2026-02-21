@@ -12,8 +12,7 @@ interface Message {
 }
 
 const Chatbot = () => {
-    const { t } = useDemo();
-    const [isOpen, setIsOpen] = useState(false);
+    const { t, isChatOpen: isOpen, setIsChatOpen: setIsOpen } = useDemo();
     const [messages, setMessages] = useState<Message[]>([]);
     const [inputValue, setInputValue] = useState('');
     const [isTyping, setIsTyping] = useState(false);
@@ -115,6 +114,8 @@ const Chatbot = () => {
             responseKey = 'chatResponseSizing';
         } else if (lowerText.includes('store') || lowerText.includes('toko') || lowerText.includes('店舗')) {
             responseKey = 'chatResponseStore';
+        } else if (lowerText.includes('help') || lowerText.includes('bantuan') || lowerText.includes('ヘルプ')) {
+            responseKey = 'chatResponseHelp';
         }
 
         setTimeout(() => {
@@ -133,6 +134,7 @@ const Chatbot = () => {
         { label: t('chatTrackOrder'), value: t('chatTrackOrder') },
         { label: t('chatSizingHelp'), value: t('chatSizingHelp') },
         { label: t('chatStoreInfo'), value: t('chatStoreInfo') },
+        { label: t('help'), value: t('help') },
         { label: t('chatHuman'), value: t('chatHuman') },
     ];
 

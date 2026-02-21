@@ -17,6 +17,8 @@ interface DemoContextType {
     lang: Language;
     setLang: (lang: Language) => void;
     t: (key: keyof typeof translations['EN']) => string;
+    isChatOpen: boolean;
+    setIsChatOpen: (isOpen: boolean) => void;
 }
 
 const DemoContext = createContext<DemoContextType | undefined>(undefined);
@@ -25,6 +27,7 @@ export const DemoProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);
     const [timeline, setTimeline] = useState<TimelineEvent[]>([]);
     const [lang, setLang] = useState<Language>('ID');
+    const [isChatOpen, setIsChatOpen] = useState(false);
 
     // Initialize from LocalStorage or Data
     useEffect(() => {
@@ -199,6 +202,8 @@ export const DemoProvider = ({ children }: { children: ReactNode }) => {
                 lang,
                 setLang,
                 t,
+                isChatOpen,
+                setIsChatOpen,
             }}
         >
             {children}

@@ -29,10 +29,10 @@ const Navbar = () => {
         { id: 'Accessories', label: t('accessories') },
     ];
 
-    const languages: { code: typeof lang; label: string }[] = [
-        { code: 'ID', label: t('langIndo') },
-        { code: 'EN', label: t('langEng') },
-        { code: 'JP', label: t('langJp') },
+    const languages: { code: typeof lang; label: string; flag: string }[] = [
+        { code: 'ID', label: t('langIndo'), flag: 'https://flagcdn.com/id.svg' },
+        { code: 'EN', label: t('langEng'), flag: 'https://flagcdn.com/us.svg' },
+        { code: 'JP', label: t('langJp'), flag: 'https://flagcdn.com/jp.svg' },
     ];
 
     return (
@@ -45,15 +45,18 @@ const Navbar = () => {
                         <Link href="/store-locator" className="hover:text-accent transition-colors">{t('storeLocator')}</Link>
                     </div>
                     <div className="flex items-center space-x-6">
-                        <div className="flex items-center space-x-3 border-r pr-6 border-zinc-200">
-                            <Globe size={12} className="text-muted" />
+                        <div className="flex items-center space-x-4 border-r pr-6 border-zinc-200">
                             {languages.map(l => (
                                 <button
                                     key={l.code}
                                     onClick={() => setLang(l.code)}
-                                    className={`hover:text-accent transition-colors ${lang === l.code ? 'text-accent font-bold' : ''}`}
+                                    title={l.label}
+                                    className={`w-[18px] h-[14px] rounded-[2px] overflow-hidden transition-all duration-300 hover:scale-110 flex items-center justify-center ${lang === l.code
+                                        ? 'grayscale-0 opacity-100 ring-1 ring-accent ring-offset-2'
+                                        : 'grayscale opacity-40 hover:opacity-100 hover:grayscale-[50%]'
+                                        }`}
                                 >
-                                    {l.label}
+                                    <img src={l.flag} alt={l.label} className="w-full h-full object-cover" />
                                 </button>
                             ))}
                         </div>
@@ -174,14 +177,18 @@ const Navbar = () => {
             {isMobileMenuOpen && (
                 <div className="fixed inset-0 z-[60] bg-white lg:hidden overflow-y-auto">
                     <div className="p-4 flex justify-between items-center border-b sticky top-0 bg-white">
-                        <div className="flex space-x-4">
+                        <div className="flex items-center space-x-5">
                             {languages.map(l => (
                                 <button
                                     key={l.code}
                                     onClick={() => setLang(l.code)}
-                                    className={`text-xs font-bold transition-colors ${lang === l.code ? 'text-accent' : 'text-muted'}`}
+                                    title={l.label}
+                                    className={`w-6 h-4 rounded-[2px] overflow-hidden transition-all duration-300 flex items-center justify-center ${lang === l.code
+                                        ? 'grayscale-0 opacity-100 ring-2 ring-accent ring-offset-2 scale-110'
+                                        : 'grayscale opacity-40'
+                                        }`}
                                 >
-                                    {l.code}
+                                    <img src={l.flag} alt={l.label} className="w-full h-full object-cover border border-zinc-200" />
                                 </button>
                             ))}
                         </div>
@@ -229,6 +236,14 @@ const Navbar = () => {
                                 </div>
                             </div>
                         ))}
+                        <div className="pt-4 border-t border-zinc-100 flex flex-col space-y-4">
+                            <Link href="/store-locator" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-bold uppercase tracking-tight text-muted hover:text-accent transition-colors">
+                                {t('storeLocator')}
+                            </Link>
+                            <Link href="/help" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-bold uppercase tracking-tight text-muted hover:text-accent transition-colors">
+                                {t('help')}
+                            </Link>
+                        </div>
                         <Link href="/products" className="text-xl font-bold uppercase tracking-tight text-accent pt-4 border-t">{t('viewAll')}</Link>
                         {user && (
                             <button onClick={logout} className="text-left text-lg font-bold uppercase tracking-tight text-red-500">{t('logout')}</button>

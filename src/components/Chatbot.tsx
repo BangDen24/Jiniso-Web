@@ -18,6 +18,55 @@ const Chatbot = () => {
     const [inputValue, setInputValue] = useState('');
     const [isTyping, setIsTyping] = useState(false);
     const scrollRef = useRef<HTMLDivElement>(null);
+    const chatbotRef = useRef<HTMLDivElement>(null);
+    const sliderRef = useRef<HTMLDivElement>(null);
+
+    // Drag to scroll logic
+    const isDown = useRef(false);
+    const startX = useRef(0);
+    const scrollLeft = useRef(0);
+
+    const handleMouseDown = (e: React.MouseEvent) => {
+        isDown.current = true;
+        if (!sliderRef.current) return;
+        startX.current = e.pageX - sliderRef.current.offsetLeft;
+        scrollLeft.current = sliderRef.current.scrollLeft;
+    };
+
+    const handleMouseLeave = () => {
+        isDown.current = false;
+    };
+
+    const handleMouseUp = () => {
+        isDown.current = false;
+    };
+
+    const handleMouseMove = (e: React.MouseEvent) => {
+        if (!isDown.current || !sliderRef.current) return;
+        e.preventDefault();
+        const x = e.pageX - sliderRef.current.offsetLeft;
+        const walk = (x - startX.current) * 2; // Scroll fast
+        sliderRef.current.scrollLeft = scrollLeft.current - walk;
+    };
+
+    // Outside click handler
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (chatbotRef.current && !chatbotRef.current.contains(event.target as Node)) {
+                setIsOpen(false);
+            }
+        };
+
+        if (isOpen) {
+            document.addEventListener('mousedown', handleClickOutside);
+        } else {
+            document.removeEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [isOpen]);
 
     useEffect(() => {
         if (isOpen && messages.length === 0) {
@@ -88,7 +137,7 @@ const Chatbot = () => {
     ];
 
     return (
-        <div className="fixed bottom-6 right-6 z-[100] font-sans">
+        <div ref={chatbotRef} className="fixed bottom-6 right-6 z-[100] font-sans">
             {/* FAB */}
             <button
                 onClick={() => setIsOpen(!isOpen)}
@@ -106,7 +155,7 @@ const Chatbot = () => {
 
             {/* Chat Window */}
             {isOpen && (
-                <div className="absolute bottom-20 right-0 w-[350px] sm:w-[400px] h-[550px] bg-white rounded-2xl shadow-3xl border border-zinc-100 flex flex-col overflow-hidden animate-fade-in-up origin-bottom-right">
+                <div className="absolute bottom-16 right-0 w-[300px] sm:w-[360px] h-[480px] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-fade-in-up origin-bottom-right">
                     {/* Header */}
                     <div className="p-6 bg-zinc-900 text-white flex items-center justify-between">
                         <div className="flex items-center space-x-3">
@@ -140,8 +189,8 @@ const Chatbot = () => {
                                         {msg.sender === 'user' ? <User size={12} className="text-zinc-600" /> : <Bot size={12} className="text-white" />}
                                     </div>
                                     <div className={`p-4 rounded-2xl text-xs font-medium leading-relaxed shadow-sm ${msg.sender === 'user'
-                                            ? 'bg-zinc-900 text-white rounded-tr-none'
-                                            : 'bg-white border border-zinc-100 text-zinc-800 rounded-tl-none'
+                                        ? 'bg-zinc-900 text-white rounded-tr-none'
+                                        : 'bg-white border border-zinc-100 text-zinc-800 rounded-tl-none'
                                         }`}>
                                         {msg.text}
                                     </div>
@@ -166,7 +215,14 @@ const Chatbot = () => {
                     </div>
 
                     {/* Quick Actions */}
-                    <div className="px-6 py-4 border-t border-zinc-100 flex overflow-x-auto gap-2 no-scrollbar bg-white">
+                    <div
+                        ref={sliderRef}
+                        className="px-6 py-4 flex overflow-x-auto gap-2 no-scrollbar bg-white cursor-grab active:cursor-grabbing border-t border-zinc-100"
+                        onMouseDown={handleMouseDown}
+                        onMouseLeave={handleMouseLeave}
+                        onMouseUp={handleMouseUp}
+                        onMouseMove={handleMouseMove}
+                    >
                         {quickActions.map((action, i) => (
                             <button
                                 key={i}

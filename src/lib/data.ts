@@ -18,6 +18,7 @@ export interface Store {
     id: string;
     name: string;
     location: string;
+    mapUrl?: string;
 }
 
 export interface Testimonial {
@@ -73,9 +74,24 @@ export interface TimelineEvent {
 }
 
 export const STORES: Store[] = [
-    { id: 's1', name: 'Jiniso Central Mall', location: 'Level 2, South Wing' },
-    { id: 's2', name: 'Jiniso Metro Square', location: 'Ground Floor, Unit 12' },
-    { id: 's3', name: 'Jiniso Urban Gallery', location: 'Level 1, North Wing' },
+    {
+        id: 's1',
+        name: 'Summarecon Mall Bekasi',
+        location: 'Level 1, Fashion District',
+        mapUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.052733857599!2d106.99757657590246!3d-6.223835660995254!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e698c257850029b%3A0xc4eb7ed0f44358fb!2sSummarecon%20Mall%20Bekasi!5e0!3m2!1sen!2sid!4v1709123456789!5m2!1sen!2sid'
+    },
+    {
+        id: 's2',
+        name: 'Summarecon Mall Bandung',
+        location: 'Ground Floor, Unit 12',
+        mapUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1468.216396781223!2d107.69742048559091!3d-6.945371661384013!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68c3bedea322a3%3A0x6fb87aeab83a4c49!2sSummarecon%20Mall%20Bandung!5e0!3m2!1sen!2sid!4v1709123456789!5m2!1sen!2sid'
+    },
+    {
+        id: 's3',
+        name: 'Pondok Indah Mall 3',
+        location: 'Level 2, North Wing',
+        mapUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.9189601447545!2d106.7801331759026!3d-6.274358661413669!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f1681a8cfc55%3A0x1382fbaf2b28c50c!2sPondok%20Indah%20Mall%203!5e0!3m2!1sen!2sid!4v1709123456789!5m2!1sen!2sid'
+    },
 ];
 
 export const TESTIMONIALS: Testimonial[] = [
@@ -227,7 +243,7 @@ const generateProducts = (count: number): Product[] => {
         items.push({
             id: `p-${i}`,
             name: `${prefix} ${baseProduct.type} ${i}`,
-            price: baseProduct.price + (Math.floor(Math.random() * 20) * 1000),
+            price: baseProduct.price + (((i * 7) % 20) * 1000),
             image: baseProduct.imgs[0],
             images: baseProduct.imgs,
             category: baseProduct.cat,
@@ -235,9 +251,9 @@ const generateProducts = (count: number): Product[] => {
             isFeatured: i <= 8,
             description: `Description for ${prefix} ${baseProduct.type}. This is a high-quality product part of our seasonal collection. Designed for versatility and long-lasting wear.`,
             stockPerStore: [
-                { storeId: 's1', stock: Math.floor(Math.random() * 25) },
-                { storeId: 's2', stock: Math.floor(Math.random() * 25) },
-                { storeId: 's3', stock: Math.floor(Math.random() * 25) },
+                { storeId: 's1', stock: ((i * 3) % 25) },
+                { storeId: 's2', stock: ((i * 5) % 25) },
+                { storeId: 's3', stock: ((i * 11) % 25) },
             ],
         });
     }

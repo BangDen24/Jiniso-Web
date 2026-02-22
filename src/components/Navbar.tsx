@@ -61,7 +61,7 @@ const Navbar = () => {
                             ))}
                         </div>
                         {!user ? (
-                            <button onClick={login} className="text-accent underline decoration-accent/20">{t('login')}</button>
+                            <Link href="/login" className="text-accent underline decoration-accent/20">{t('login')}</Link>
                         ) : (
                             <span className="text-accent italic">{t('welcome')}, {user.name}</span>
                         )}
@@ -137,13 +137,13 @@ const Navbar = () => {
                         </div>
 
                         {!user ? (
-                            <button
-                                onClick={login}
+                            <Link
+                                href="/login"
                                 className="hidden sm:flex items-center space-x-2 text-xs font-bold uppercase tracking-wider text-accent border border-accent/20 px-4 py-2 hover:bg-accent hover:text-white transition-all shadow-sm"
                             >
                                 <LogIn size={16} />
                                 <span>{t('joinDemo')}</span>
-                            </button>
+                            </Link>
                         ) : (
                             <div className="flex items-center space-x-4 sm:space-x-6">
                                 <Link href="/cart" className="relative text-accent hover:opacity-70 transition-opacity">

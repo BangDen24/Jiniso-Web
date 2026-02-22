@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { MessageCircle, X, Send, User, Bot, Sparkles } from 'lucide-react';
-import { useDemo } from '@/context/DemoContext';
+import { useApp } from '@/context/AppContext';
 
 interface Message {
     id: string;
@@ -12,7 +12,7 @@ interface Message {
 }
 
 const Chatbot = () => {
-    const { t, isChatOpen: isOpen, setIsChatOpen: setIsOpen } = useDemo();
+    const { t, isChatOpen: isOpen, setIsChatOpen: setIsOpen } = useApp();
     const [messages, setMessages] = useState<Message[]>([]);
     const [inputValue, setInputValue] = useState('');
     const [isTyping, setIsTyping] = useState(false);

@@ -2,13 +2,13 @@
 
 import React, { useEffect } from 'react';
 import Link from 'next/link';
-import { useDemo } from '@/context/DemoContext';
+import { useApp } from '@/context/AppContext';
 import Script from 'next/script';
 import { PRODUCTS, STORES, TESTIMONIALS } from '@/lib/data';
 import { ArrowRight, ShoppingBag, Clock, MapPin, Sparkles, Star, Quote, ChevronRight } from 'lucide-react';
 
 export default function Home() {
-  const { user, login, t } = useDemo();
+  const { user, login, t } = useApp();
 
   useEffect(() => {
     if (typeof window !== 'undefined' && (window as any).instgrm) {

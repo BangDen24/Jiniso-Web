@@ -1,14 +1,14 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useDemo } from '@/context/DemoContext';
+import { useApp } from '@/context/AppContext';
 import { useRouter } from 'next/navigation';
 import { STATIC_CREDENTIALS } from '@/lib/credentials';
 import { Lock, User as UserIcon, ArrowRight, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 
 export default function LoginPage() {
-    const { login, t } = useDemo();
+    const { login, t } = useApp();
     const router = useRouter();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -46,14 +46,14 @@ export default function LoginPage() {
                         <h1 className="text-4xl font-bold tracking-[0.2em] text-white">JINISO</h1>
                     </Link>
                     <p className="text-zinc-400 font-medium tracking-widest uppercase text-xs">
-                        Demo Administrative Access
+                        Member Portal Access
                     </p>
                 </div>
 
                 <div className="bg-zinc-800/50 backdrop-blur-xl border border-white/10 p-8 rounded-3xl shadow-2xl space-y-8">
                     <div className="space-y-2">
                         <h2 className="text-2xl font-bold text-white tracking-tight italic uppercase">Welcome Back</h2>
-                        <p className="text-zinc-500 text-sm">Please enter the demo credentials to continue.</p>
+                        <p className="text-zinc-500 text-sm">Please enter your credentials to continue.</p>
                     </div>
 
                     <form onSubmit={handleSubmit} className="space-y-6">
@@ -123,7 +123,7 @@ export default function LoginPage() {
                         <span>Seamless CX</span>
                     </span>
                     <span>Secure Protocol</span>
-                    <span>v2.4.0</span>
+                    <span>v2.8.0</span>
                 </div>
             </div>
         </div>

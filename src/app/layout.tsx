@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { DemoProvider } from "@/context/DemoContext";
+import { AppProvider } from '@/context/AppContext';
 import Navbar from "@/components/Navbar";
 import Chatbot from "@/components/Chatbot";
 
@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Jiniso Seamless Demo",
-  description: "A seamless customer experience concept demo",
+  title: "JINISO | Seamless Customer Experience",
+  description: "Experience the continuity of JINISO premium denim across all touchpoints.",
 };
 
 export default function RootLayout({
@@ -30,13 +30,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased selection:bg-accent selection:text-white`}
       >
-        <DemoProvider>
+        <AppProvider>
           <Navbar />
           <main className="min-h-screen pt-20 pb-12">
             {children}
           </main>
           <Chatbot />
-        </DemoProvider>
+        </AppProvider>
       </body>
     </html>
   );

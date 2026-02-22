@@ -4,7 +4,7 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import { User, INITIAL_USER, TimelineEvent, INITIAL_TIMELINE, PRODUCTS, Product } from '@/lib/data';
 import { Language, translations } from '@/lib/translations';
 
-interface DemoContextType {
+interface AppContextType {
     user: User | null;
     timeline: TimelineEvent[];
     login: () => void;
@@ -21,9 +21,9 @@ interface DemoContextType {
     setIsChatOpen: (isOpen: boolean) => void;
 }
 
-const DemoContext = createContext<DemoContextType | undefined>(undefined);
+const AppContext = createContext<AppContextType | undefined>(undefined);
 
-export const DemoProvider = ({ children }: { children: ReactNode }) => {
+export const AppProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);
     const [timeline, setTimeline] = useState<TimelineEvent[]>([]);
     const [lang, setLang] = useState<Language>('ID');
@@ -31,8 +31,8 @@ export const DemoProvider = ({ children }: { children: ReactNode }) => {
 
     // Initialize from LocalStorage or Data
     useEffect(() => {
-        const savedUser = localStorage.getItem('demo_user');
-        const savedTimeline = localStorage.getItem('demo_timeline');
+        const savedUser = localStorage.getItem('jiniso_user');
+        const savedTimeline = localStorage.getItem('jiniso_timeline');
 
         if (savedUser) {
             setUser(JSON.parse(savedUser));
@@ -40,7 +40,7 @@ export const DemoProvider = ({ children }: { children: ReactNode }) => {
         if (savedTimeline) {
             setTimeline(JSON.parse(savedTimeline));
         }
-        const savedLang = localStorage.getItem('demo_lang') as Language;
+        const savedLang = localStorage.getItem('jiniso_lang') as Language;
         if (savedLang) {
             setLang(savedLang);
         }
@@ -49,18 +49,18 @@ export const DemoProvider = ({ children }: { children: ReactNode }) => {
     // Sync with LocalStorage
     useEffect(() => {
         if (user) {
-            localStorage.setItem('demo_user', JSON.stringify(user));
+            localStorage.setItem('jiniso_user', JSON.stringify(user));
         } else {
-            localStorage.removeItem('demo_user');
+            localStorage.removeItem('jiniso_user');
         }
     }, [user]);
 
     useEffect(() => {
-        localStorage.setItem('demo_timeline', JSON.stringify(timeline));
+        localStorage.setItem('jiniso_timeline', JSON.stringify(timeline));
     }, [timeline]);
 
     useEffect(() => {
-        localStorage.setItem('demo_lang', lang);
+        localStorage.setItem('jiniso_lang', lang);
     }, [lang]);
 
     const t = (key: keyof typeof translations['EN']) => {
@@ -109,7 +109,7 @@ export const DemoProvider = ({ children }: { children: ReactNode }) => {
 
     const addToCart = (productId: string, quantity: number) => {
         if (!user) {
-            alert('Please login as a demo user first.');
+            alert('Please login to your account first.');
             return;
         }
         setUser((prev) => {
@@ -139,7 +139,7 @@ export const DemoProvider = ({ children }: { children: ReactNode }) => {
 
     const reserveProduct = (productId: string, storeId: string, storeName: string) => {
         if (!user) {
-            alert('Please login as a demo user first.');
+            alert('Please login to your account first.');
             return;
         }
         const product = PRODUCTS.find(p => p.id === productId);
@@ -188,7 +188,7 @@ export const DemoProvider = ({ children }: { children: ReactNode }) => {
     };
 
     return (
-        <DemoContext.Provider
+        <AppContext.Provider
             value={{
                 user,
                 timeline,
@@ -207,14 +207,14 @@ export const DemoProvider = ({ children }: { children: ReactNode }) => {
             }}
         >
             {children}
-        </DemoContext.Provider>
+        </AppContext.Provider>
     );
 };
 
-export const useDemo = () => {
-    const context = useContext(DemoContext);
+export const useApp = () => {
+    const context = useContext(AppContext);
     if (context === undefined) {
-        throw new Error('useDemo must be used within a DemoProvider');
+        throw new Error('useApp must be used within an AppProvider');
     }
     return context;
 };

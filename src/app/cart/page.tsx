@@ -2,14 +2,15 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { useDemo } from '@/context/DemoContext';
+import { useApp } from '@/context/AppContext';
 import { PRODUCTS } from '@/lib/data';
 import { Trash2, ArrowLeft, CreditCard, ShoppingBag, ChevronRight, Sparkles } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 const CartPage = () => {
-    const { user, removeFromCart, checkout, t } = useDemo();
+    const { user, removeFromCart, checkout, t } = useApp();
     const router = useRouter();
+    const [isPaymentModalOpen, setIsPaymentModalOpen] = React.useState(false);
 
     if (!user || user.cartItems.length === 0) {
         return (
@@ -43,11 +44,15 @@ const CartPage = () => {
         };
     }).filter(item => item.product);
 
-    const total = cartDetails.reduce((acc, item) => acc + (item.product?.price || 0) * item.quantity, 0);
+    const subtotal = cartDetails.reduce((acc: number, item: any) => acc + (item.product?.price || 0) * item.quantity, 0);
 
     const handleCheckout = () => {
+        setIsPaymentModalOpen(true);
+    };
+
+    const confirmPayment = () => {
         checkout();
-        alert(t('thankYouOrder'));
+        setIsPaymentModalOpen(false);
         router.push('/orders');
     };
 
@@ -65,7 +70,7 @@ const CartPage = () => {
                 {/* Cart Items */}
                 <div className="lg:col-span-2 space-y-10 sm:space-y-12 animate-fade-in-up">
                     <div className="divide-y divide-zinc-100 border-t border-zinc-100">
-                        {cartDetails.map(item => (
+                        {cartDetails.map((item: any) => (
                             <div key={item.productId} className="flex flex-col sm:flex-row gap-6 sm:gap-10 py-10 group relative">
                                 <Link href={`/products/${item.productId}`} className="w-full sm:w-32 aspect-[3/4] sm:aspect-auto sm:h-44 flex-shrink-0 overflow-hidden bg-zinc-100 shadow-sm border border-zinc-100 hover-scale transition-all">
                                     <img src={item.product?.image} alt={item.product?.name} className="w-full h-full object-cover" />
@@ -120,7 +125,7 @@ const CartPage = () => {
                         <div className="space-y-6">
                             <div className="flex justify-between items-center group">
                                 <span className="text-[11px] font-bold uppercase tracking-[0.3em] text-muted group-hover:text-black transition-colors">{t('subtotalWithItems').replace('{count}', cartDetails.length.toString())}</span>
-                                <span className="font-bold text-lg italic tracking-tight">Rp {total.toLocaleString()}</span>
+                                <span className="font-bold text-lg italic tracking-tight">Rp {subtotal.toLocaleString()}</span>
                             </div>
                             <div className="flex justify-between items-center group">
                                 <span className="text-[11px] font-bold uppercase tracking-[0.3em] text-muted group-hover:text-black transition-colors">{t('standardShipping')}</span>
@@ -134,7 +139,7 @@ const CartPage = () => {
                                     <span className="uppercase tracking-widest text-[11px] not-italic text-muted mb-0.5">{t('total')}</span>
                                     <div className="h-6 w-[1px] bg-zinc-200" />
                                 </div>
-                                <span className="tracking-tighter">Rp {total.toLocaleString()}</span>
+                                <span className="tracking-tighter">Rp {subtotal.toLocaleString()}</span>
                             </div>
                         </div>
 
@@ -162,6 +167,60 @@ const CartPage = () => {
                     </div>
                 </div>
             </div>
+            {/* Payment Modal */}
+            {isPaymentModalOpen && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center px-4 sm:px-0">
+                    <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setIsPaymentModalOpen(false)} />
+                    <div className="bg-white max-w-lg w-full relative z-10 animate-fade-in-up border-4 border-zinc-900 shadow-3xl overflow-hidden">
+                        <div className="bg-zinc-900 p-8 sm:p-10 text-white space-y-4">
+                            <div className="flex items-center space-x-4">
+                                <div className="p-3 bg-accent rounded-full animate-pulse">
+                                    <CreditCard size={24} className="text-white" />
+                                </div>
+                                <h2 className="text-2xl sm:text-3xl font-bold uppercase tracking-tighter italic">Payment Gateway</h2>
+                            </div>
+                            <p className="text-zinc-400 text-xs font-bold uppercase tracking-[0.2em]">{t('paymentSecurity')}</p>
+                        </div>
+
+                        <div className="p-8 sm:p-10 space-y-8">
+                            <div className="space-y-4">
+                                <p className="text-[10px] font-bold text-muted uppercase tracking-[0.3em]">{t('paymentMethod')}</p>
+                                <div className="p-6 bg-zinc-50 border border-zinc-100 space-y-6">
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-sm font-bold uppercase tracking-tighter italic text-zinc-900">BCA Virtual Account</span>
+                                        <div className="text-accent text-xs font-bold italic uppercase tracking-widest border-b border-accent/20">Official JINISO</div>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <p className="text-[9px] font-bold uppercase tracking-widest text-muted/60">Transfer Number</p>
+                                        <p className="text-3xl font-bold tracking-tighter italic text-zinc-900 select-all">3901 0812 3456 7890</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="space-y-4">
+                                <p className="text-[10px] font-bold text-muted uppercase tracking-[0.3em]">{t('total')}</p>
+                                <p className="text-4xl font-bold tracking-tighter italic text-accent">Rp {subtotal.toLocaleString()}</p>
+                            </div>
+
+                            <div className="space-y-4 pt-4">
+                                <button
+                                    onClick={confirmPayment}
+                                    className="w-full bg-accent text-white py-6 font-bold uppercase tracking-[0.4em] text-[11px] shadow-2xl hover:bg-dark-accent transition-all relative group overflow-hidden"
+                                >
+                                    <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+                                    <span className="relative z-10">Konfirmasi Pembayaran</span>
+                                </button>
+                                <button
+                                    onClick={() => setIsPaymentModalOpen(false)}
+                                    className="w-full py-4 text-[9px] font-bold uppercase tracking-[0.3em] text-muted hover:text-black transition-colors"
+                                >
+                                    Cancel Transaction
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

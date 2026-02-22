@@ -2,11 +2,11 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { useDemo } from '@/context/DemoContext';
+import { useApp } from '@/context/AppContext';
 import { ShoppingCart, User, LogIn, LogOut, Search, Menu, X, ChevronDown, Globe } from 'lucide-react';
 
 const Navbar = () => {
-    const { user, login, logout, lang, setLang, t } = useDemo();
+    const { user, login, logout, lang, setLang, t } = useApp();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [activeMenu, setActiveMenu] = useState<string | null>(null);
     const [searchQuery, setSearchQuery] = useState('');
@@ -142,7 +142,7 @@ const Navbar = () => {
                                 className="hidden sm:flex items-center space-x-2 text-xs font-bold uppercase tracking-wider text-accent border border-accent/20 px-4 py-2 hover:bg-accent hover:text-white transition-all shadow-sm"
                             >
                                 <LogIn size={16} />
-                                <span>{t('joinDemo')}</span>
+                                <span>{t('memberAccess')}</span>
                             </Link>
                         ) : (
                             <div className="flex items-center space-x-4 sm:space-x-6">

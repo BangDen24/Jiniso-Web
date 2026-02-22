@@ -328,7 +328,7 @@ export const INITIAL_USER: User = {
     email: 'dini.cahyo@example.com',
     phone: '+62 812 3456 7890',
     viewedProducts: ['p-1', 'p-2'],
-    cartItems: [{ productId: 'p-3', quantity: 1 }],
+    cartItems: [],
     reservations: [],
     orders: [
         {

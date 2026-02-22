@@ -2,12 +2,12 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { useDemo } from '@/context/DemoContext';
+import { useApp } from '@/context/AppContext';
 import { PRODUCTS, TrackingStep } from '@/lib/data';
 import { Package, Heart, RefreshCw, Sparkles, ChevronRight, Truck, MapPin, CheckCircle2, Clock, X, Search } from 'lucide-react';
 
 const OrdersPage = () => {
-    const { user, t } = useDemo();
+    const { user, t } = useApp();
     const [selectedTracking, setSelectedTracking] = useState<TrackingStep[] | null>(null);
     const [trackingItemName, setTrackingItemName] = useState<string>('');
     const [trackingInfo, setTrackingInfo] = useState<{ courier?: string; arrival?: string; shipped?: string }>({});

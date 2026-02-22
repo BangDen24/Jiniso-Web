@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { use } from 'react';
-import { useDemo } from '@/context/DemoContext';
+import { useApp } from '@/context/AppContext';
 import { PRODUCTS, STORES, TESTIMONIALS } from '@/lib/data';
 import { useRouter } from 'next/navigation';
 import { Check, MapPin, ShoppingCart, ArrowLeft, X, Star, Quote, MessageSquare, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -15,7 +15,7 @@ interface PageProps {
 const ProductDetailPage = ({ params }: PageProps) => {
     const { id } = use(params);
     const router = useRouter();
-    const { addToCart, reserveProduct, trackView, user, t } = useDemo();
+    const { addToCart, reserveProduct, trackView, user, t } = useApp();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedQuantity, setSelectedQuantity] = useState(1);
     const [activeImageIdx, setActiveImageIdx] = useState(0);

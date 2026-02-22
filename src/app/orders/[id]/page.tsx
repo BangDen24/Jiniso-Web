@@ -2,7 +2,7 @@
 
 import React, { use } from 'react';
 import Link from 'next/link';
-import { useDemo } from '@/context/DemoContext';
+import { useApp } from '@/context/AppContext';
 import { PRODUCTS, STORES } from '@/lib/data';
 import { ArrowLeft, Package, MapPin, Truck, CheckCircle2, Clock, CreditCard, ChevronRight, Calendar, Info, Sparkles } from 'lucide-react';
 
@@ -12,7 +12,7 @@ interface PageProps {
 
 const OrderDetailPage = ({ params }: PageProps) => {
     const { id } = use(params);
-    const { user, t } = useDemo();
+    const { user, t } = useApp();
 
     const order = user?.orders.find(o => o.id === id);
 
@@ -64,31 +64,30 @@ const OrderDetailPage = ({ params }: PageProps) => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 sm:gap-20">
                 <div className="lg:col-span-2 space-y-16 sm:space-y-24">
                     {/* Logistics Quick Overview */}
-                    {mainItem?.courierName && (
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                            <div className="premium-card p-6 sm:p-10 bg-zinc-50 border border-zinc-100 space-y-4 hover-lift">
-                                <div className="flex items-center space-x-3 text-accent opacity-40">
-                                    <Truck size={14} />
-                                    <span className="text-[9px] font-bold uppercase tracking-[0.3em]">{t('courier')}</span>
-                                </div>
-                                <p className="text-lg font-bold uppercase italic text-black leading-none">{mainItem.courierName}</p>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div className="premium-card p-6 sm:p-10 bg-zinc-50 border border-zinc-100 space-y-4 hover-lift">
+                            <div className="flex items-center space-x-3 text-accent opacity-40">
+                                <Truck size={14} />
+                                <span className="text-[9px] font-bold uppercase tracking-[0.3em]">{t('courier')}</span>
                             </div>
-                            <div className="premium-card p-6 sm:p-10 bg-zinc-50 border border-zinc-100 space-y-4 hover-lift">
-                                <div className="flex items-center space-x-3 text-accent opacity-40">
-                                    <Calendar size={14} />
-                                    <span className="text-[9px] font-bold uppercase tracking-[0.3em]">{t('shippedOn')}</span>
-                                </div>
-                                <p className="text-lg font-bold uppercase italic text-black leading-none">{mainItem.shippedDate}</p>
-                            </div>
-                            <div className="premium-card p-6 sm:p-10 bg-accent text-white space-y-4 shadow-2xl pulse-accent hover-scale">
-                                <div className="flex items-center space-x-3 opacity-60">
-                                    <Clock size={14} />
-                                    <span className="text-[9px] font-bold uppercase tracking-[0.3em]">{t('estimatedArrival')}</span>
-                                </div>
-                                <p className="text-lg font-bold uppercase italic leading-none">{mainItem.estimatedArrival}</p>
-                            </div>
+                            <p className="text-lg font-bold uppercase italic text-black leading-none">JNE Express</p>
                         </div>
-                    )}
+                        <div className="premium-card p-6 sm:p-10 bg-zinc-50 border border-zinc-100 space-y-4 hover-lift">
+                            <div className="flex items-center space-x-3 text-accent opacity-40">
+                                <Calendar size={14} />
+                                <span className="text-[9px] font-bold uppercase tracking-[0.3em]">{t('shippedOn')}</span>
+                            </div>
+                            <p className="text-lg font-bold uppercase italic text-black leading-none">Feb 22, 2026</p>
+                        </div>
+                        <div className="premium-card p-6 sm:p-10 bg-accent text-white space-y-4 shadow-2xl pulse-accent hover-scale">
+                            <div className="flex items-center space-x-3 opacity-60">
+                                <Clock size={14} />
+                                <span className="text-[9px] text-black font-bold uppercase tracking-[0.3em]">{t('estimatedArrival')}</span>
+                            </div>
+                            <p className="text-lg text-black font-bold uppercase italic leading-none">Feb 23, 2026</p>
+                        </div>
+                    </div>
+
 
                     {/* PAYMENT TIMELINE */}
                     <section className="space-y-12 sm:space-y-16 animate-fade-in-up">
@@ -115,7 +114,7 @@ const OrderDetailPage = ({ params }: PageProps) => {
                                                 <h3 className={`text-base font-bold uppercase tracking-[0.2em] italic ${idx === 0 ? 'text-black' : 'text-muted/50'}`}>
                                                     {step.status}
                                                 </h3>
-                                                <span className="text-[9px] font-bold text-muted/40 uppercase tracking-[0.3em] bg-zinc-50/50 px-3 py-1 rounded-full border border-zinc-100">{step.date}</span>
+                                                <span className="text-[9px] font-bold text-black/40 uppercase tracking-[0.3em] bg-zinc-50/50 px-3 py-1 rounded-full border border-zinc-100">{step.date}</span>
                                             </div>
                                             <p className="text-xs sm:text-sm font-medium text-muted leading-relaxed italic opacity-60 max-w-lg">"{step.description}"</p>
                                         </div>
@@ -137,7 +136,7 @@ const OrderDetailPage = ({ params }: PageProps) => {
                             {mainItem?.courierName && (
                                 <div className="bg-zinc-50 px-6 py-3 border border-zinc-100 shadow-sm rounded-sm">
                                     <p className="text-[9px] font-bold text-muted/60 uppercase tracking-widest mb-1">{t('globalTrackingId')}</p>
-                                    <p className="text-[11px] font-bold text-accent tracking-[0.3em]">JNS-{order.id.split('-')[1]}00{id.length}</p>
+                                    <p className="text-[11px] font-bold text-accent tracking-[0.3em]">JNE-REG-08122026-XJ99</p>
                                 </div>
                             )}
                         </div>
@@ -156,7 +155,10 @@ const OrderDetailPage = ({ params }: PageProps) => {
                                                 <h3 className={`text-base font-bold uppercase tracking-[0.2em] italic ${idx === 0 ? 'text-accent' : 'text-muted/50'}`}>
                                                     {step.status}
                                                 </h3>
-                                                <span className="text-[9px] font-bold text-muted/40 uppercase tracking-[0.3em] bg-zinc-50/50 px-3 py-1 rounded-full border border-zinc-100">{step.date}</span>
+                                                <div className="flex flex-col items-end">
+                                                    <span className="text-[9px] font-bold text-muted/40 uppercase tracking-[0.3em] bg-zinc-50/50 px-3 py-1 rounded-full border border-zinc-100">{step.date}</span>
+                                                    {idx === 0 && <span className="text-[8px] font-bold text-accent uppercase tracking-widest mt-1">Live Update</span>}
+                                                </div>
                                             </div>
                                             <div className="flex items-center space-x-3 text-accent/60">
                                                 <MapPin size={12} className="text-accent/30" />
@@ -167,7 +169,39 @@ const OrderDetailPage = ({ params }: PageProps) => {
                                     </div>
                                 ))}
                             </div>
-                        ) : null}
+                        ) : (
+                            <div className="space-y-10 relative pt-4 ml-4 sm:ml-6">
+                                <div className="absolute left-[15px] top-6 bottom-6 w-0.5 bg-zinc-100" />
+                                {[
+                                    { status: 'In Transit', location: 'DC Hub Jakarta Timur', date: 'Feb 22, 2026 - 14:00', desc: 'Paket sedang transit di pusat distribusi Jakarta Timur.' },
+                                    { status: 'Item Picked Up', location: 'Gudang JINISO', date: 'Feb 22, 2026 - 10:30', desc: 'Paket telah diserahterimakan ke kurir ekspedisi.' },
+                                    { status: 'Order Processed', location: 'System', date: 'Feb 21, 2026 - 18:45', desc: 'Pesanan telah diverifikasi dan siap untuk dikirim.' }
+                                ].map((step, idx) => (
+                                    <div key={idx} className="flex gap-8 sm:gap-12 relative group tracking-step-hover p-4 sm:p-6 rounded-sm">
+                                        <div className={`z-10 w-8 h-8 rounded-full flex items-center justify-center ring-[6px] ring-white shadow-xl transition-all duration-700 ${idx === 0 ? 'bg-accent text-white scale-125 pulse-accent' : 'bg-zinc-200 text-muted opacity-40 group-hover:opacity-100'
+                                            }`}>
+                                            {idx === 0 ? <Truck size={16} /> : <Clock size={16} />}
+                                        </div>
+                                        <div className="flex-1 space-y-3">
+                                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                                                <h3 className={`text-base font-bold uppercase tracking-[0.2em] italic ${idx === 0 ? 'text-accent' : 'text-muted/50'}`}>
+                                                    {step.status}
+                                                </h3>
+                                                <div className="flex flex-col items-end">
+                                                    <span className="text-[9px] font-bold text-muted/40 uppercase tracking-[0.3em] bg-zinc-50/50 px-3 py-1 rounded-full border border-zinc-100">{step.date}</span>
+                                                    {idx === 0 && <span className="text-[8px] font-bold text-accent uppercase tracking-widest mt-1">Estimasi Tiba: Besok, 17:00</span>}
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center space-x-3 text-accent/60">
+                                                <MapPin size={12} className="text-accent/30" />
+                                                <span className="border-b border-accent/10">{step.location}</span>
+                                            </div>
+                                            <p className="text-xs sm:text-sm font-medium text-muted leading-relaxed italic opacity-60 max-w-lg">"{step.desc}"</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </section>
 
                     {/* Order Items */}
@@ -232,7 +266,7 @@ const OrderDetailPage = ({ params }: PageProps) => {
                                 <h3 className="text-[11px] font-bold uppercase tracking-[0.4em]">{t('summary')}</h3>
                             </div>
                         </div>
-                        <div className="space-y-8 relative z-10">
+                        <div className="space-y-8 relative z-10 text-black">
                             <div className="flex justify-between items-center group">
                                 <span className="text-[11px] font-bold uppercase tracking-[0.3em] opacity-40 group-hover:opacity-100 transition-opacity">{t('subtotal')}</span>
                                 <span className="font-bold text-lg italic tracking-tight">Rp {subtotal.toLocaleString()}</span>
@@ -240,21 +274,21 @@ const OrderDetailPage = ({ params }: PageProps) => {
                             <div className="flex justify-between items-center group">
                                 <span className="text-[11px] font-bold uppercase tracking-[0.3em] opacity-40 group-hover:opacity-100 transition-opacity">{t('shipping')}</span>
                                 <div className="flex items-center space-x-3">
-                                    <span className="text-[10px] font-bold text-white/30 line-through uppercase">Rp 50.000</span>
+                                    <span className="text-[10px] font-bold text-black/30 line-through uppercase">Rp 50.000</span>
                                     <span className="text-accent uppercase font-bold text-[11px] tracking-[0.3em] bg-accent/10 px-3 py-1 rounded-full">{t('free')}</span>
                                 </div>
                             </div>
                             <div className="flex justify-between items-end border-t border-white/10 pt-10">
                                 <div className="space-y-1">
                                     <p className="text-[10px] font-bold uppercase tracking-[0.4em] opacity-40">{t('total')}</p>
-                                    <p className="text-4xl font-bold tracking-tighter italic text-white leading-none">Rp {total.toLocaleString()}</p>
+                                    <p className="text-4xl text-black font-bold tracking-tighter italic leading-none">Rp {total.toLocaleString()}</p>
                                 </div>
                             </div>
                         </div>
                         <div className="pt-6 relative z-10">
                             <div className="p-6 bg-white/5 border border-white/10 flex flex-col space-y-4">
                                 <div className="flex justify-between items-center">
-                                    <span className="text-[9px] font-bold uppercase tracking-[0.3em] opacity-30">{t('paymentMethod')}</span>
+                                    <span className="text-[9px] text-black font-bold uppercase tracking-[0.3em] opacity-30">{t('paymentMethod')}</span>
                                     <span className="text-[11px] font-bold uppercase tracking-widest text-accent">{order.paymentMethod || 'Virtual Account'}</span>
                                 </div>
                                 <div className="flex items-center space-x-3 text-green-400">
@@ -270,20 +304,52 @@ const OrderDetailPage = ({ params }: PageProps) => {
                             <MapPin size={22} className="opacity-40 group-hover:opacity-100 transition-opacity" />
                             <h3 className="text-[11px] font-bold uppercase tracking-[0.4em]">{t('shippingAddress')}</h3>
                         </div>
-                        <div className="space-y-6">
-                            <div className="space-y-2">
-                                <p className="text-lg font-bold uppercase italic text-black leading-none">{user.name}</p>
-                                <p className="text-[10px] font-bold text-muted/60 uppercase tracking-widest">{t('primaryResidence')}</p>
+                        <div className="space-y-8">
+                            <div className="space-y-4">
+                                <div className="space-y-1">
+                                    <p className="text-[9px] font-bold text-muted/60 uppercase tracking-widest">Sender / Warehouse</p>
+                                    <p className="text-lg font-bold uppercase italic text-black leading-none">JINISO Warehouse</p>
+                                </div>
+                                <div className="text-sm font-medium text-zinc-600 leading-relaxed font-serif opacity-80">
+                                    <p>Kawasan Industri Pulogadung</p>
+                                    <p>Jl. Rawa Gelam IV No. 5</p>
+                                    <p>Jakarta Timur, DKI Jakarta, 13930</p>
+                                </div>
                             </div>
-                            <div className="text-sm font-medium text-zinc-600 leading-relaxed space-y-2 font-serif opacity-80 group-hover:opacity-100 transition-opacity">
-                                <p>Jl. Jenderal Sudirman No. 123</p>
-                                <p>SCBD Lot 10, Jakarta Selatan</p>
-                                <p>DKI Jakarta, 12190</p>
+
+                            <div className="h-[1px] bg-zinc-100 w-full" />
+
+                            <div className="space-y-4">
+                                <div className="space-y-1">
+                                    <p className="text-[9px] font-bold text-muted/60 uppercase tracking-widest">Recipient</p>
+                                    <p className="text-lg font-bold uppercase italic text-black leading-none">{user.name}</p>
+                                </div>
+                                <div className="text-sm font-medium text-zinc-600 leading-relaxed font-serif opacity-80">
+                                    <p>Jl. Jenderal Sudirman No. 123</p>
+                                    <p>SCBD Lot 10, Jakarta Selatan</p>
+                                    <p>DKI Jakarta, 12190</p>
+                                </div>
+                            </div>
+
+                            {/* Dummy Map Embed */}
+                            <div className="w-full aspect-video bg-zinc-100 border border-zinc-200 relative overflow-hidden grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-500">
+                                <iframe
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.2738734994!2d106.81229717590216!3d-6.227560360986794!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f150493026ad%3A0x1d3a571f54cf53a2!2sSCBD!5e0!3m2!1sen!2sid!4v1709123456789!5m2!1sen!2sid"
+                                    width="100%"
+                                    height="100%"
+                                    style={{ border: 0 }}
+                                    allowFullScreen={true}
+                                    loading="lazy"
+                                    referrerPolicy="no-referrer-when-downgrade"
+                                />
+                                <div className="absolute top-4 left-4 bg-zinc-900/90 text-white p-3 backdrop-blur-md shadow-2xl">
+                                    <div className="flex items-center space-x-3">
+                                        <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                                        <p className="text-[9px] font-bold uppercase tracking-widest">Live Package Location</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <button className="w-full py-4 border border-zinc-100 text-[10px] font-bold uppercase tracking-[0.3em] hover:bg-zinc-50 transition-colors">
-                            {t('reportRedirection')}
-                        </button>
                     </div>
 
                     <div className="p-10 bg-zinc-50 border border-zinc-200/50 text-center space-y-8 group cursor-pointer hover:bg-white hover:border-accent hover:shadow-2xl transition-all duration-500 rounded-sm">

@@ -1,318 +1,121 @@
 'use client';
 
-import React, { useState, useMemo, Suspense } from 'react';
+import React, { Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { PRODUCTS } from '@/lib/data';
-import { useDemo } from '@/context/DemoContext';
+import { useApp } from '@/context/AppContext';
 import { Search, Filter, ArrowRight, X, ChevronDown } from 'lucide-react';
 
 const ProductsList = () => {
-    const { t } = useDemo();
+    const { t } = useApp();
     const searchParams = useSearchParams();
     const activeCategory = searchParams.get('category');
     const activeType = searchParams.get('type');
-    const urlSearch = searchParams.get('search');
-    const [searchQuery, setSearchQuery] = useState(urlSearch || '');
-    const [sortBy, setSortBy] = useState(t('sortFeatured'));
-    const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
-    const mainCategories = [
-        { id: 'All', label: t('collection') },
-        { id: 'Women', label: t('women') },
-        { id: 'Men', label: t('men') },
-        { id: 'Kids', label: t('kids') },
-        { id: 'Accessories', label: t('accessories') },
-        { id: 'Collections', label: t('collections') }
-    ];
-
-    const subCategories = [
-        { id: 'Tops', label: t('tops') },
-        { id: 'Bottoms', label: t('bottoms') },
-        { id: 'Outerwear', label: t('outerwear') },
-        { id: 'Innerwear', label: t('innerwear') },
-        { id: 'Accessories', label: t('accessories') }
-    ];
-
-    const filteredProducts = useMemo(() => {
-        let result = [...PRODUCTS];
-
-        if (activeCategory && activeCategory !== 'All') {
-            result = result.filter(p => p.category === activeCategory);
-        }
-
-        if (activeType) {
-            result = result.filter(p => p.subCategory === activeType);
-        }
-
-        if (searchQuery) {
-            result = result.filter(p =>
-                p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                p.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                p.subCategory.toLowerCase().includes(searchQuery.toLowerCase())
-            );
-        }
-
-        if (sortBy === t('sortPriceLowHigh')) {
-            result.sort((a, b) => a.price - b.price);
-        } else if (sortBy === t('sortPriceHighLow')) {
-            result.sort((a, b) => b.price - a.price);
-        }
-
-        return result;
-    }, [activeCategory, activeType, searchQuery, sortBy]);
+    const filteredProducts = PRODUCTS.filter(product => {
+        if (activeCategory && product.category !== activeCategory) return false;
+        if (activeType && product.subCategory !== activeType) return false;
+        return true;
+    });
 
     return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12 space-y-8 sm:space-y-12">
-            {/* Breadcrumbs & Title */}
-            <section className="space-y-4 sm:space-y-6">
-                <div className="flex items-center space-x-2 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-muted">
-                    <Link href="/" className="hover:text-accent transition-colors">{t('home')}</Link>
-                    <span>/</span>
-                    <Link href="/products" className={!activeCategory ? 'text-accent' : 'hover:text-accent transition-colors'}>{t('collection')}</Link>
-                    {activeCategory && activeCategory !== 'All' && (
-                        <>
-                            <span>/</span>
-                            <span className={!activeType ? 'text-accent' : ''}>{t(activeCategory.toLowerCase() as any)}</span>
-                        </>
-                    )}
-                    {activeType && (
-                        <>
-                            <span>/</span>
-                            <span className="text-accent">{t(activeType.toLowerCase() as any)}</span>
-                        </>
-                    )}
-                </div>
-                <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-                    <h1 className="text-3xl sm:text-5xl font-bold tracking-tighter uppercase italic underline decoration-accent/10">
-                        {searchQuery ? `${t('search')} : ${searchQuery}` : (activeType ? `${t(activeType.toLowerCase() as any)} for ${activeCategory ? t(activeCategory.toLowerCase() as any) : 'Everyone'}` : (activeCategory === 'All' || !activeCategory ? t('collection') : t(activeCategory.toLowerCase() as any)))}
-                    </h1>
-                    <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-muted px-4 py-2 bg-zinc-50 border border-zinc-100 rounded-full w-fit">
-                        {filteredProducts.length} Items Found
-                    </span>
-                </div>
-            </section>
-
-            <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 relative">
-                {/* Sidebar Filters (Desktop) / Mobile Toggle */}
-                <aside className="lg:w-64 flex-shrink-0 space-y-10 hidden lg:block border-r border-zinc-100 pr-8">
-                    <div className="space-y-6">
-                        <h3 className="text-[11px] font-bold uppercase tracking-[0.3em] text-accent border-b border-accent/20 pb-2">{t('collections')}</h3>
-                        <div className="flex flex-col space-y-3">
-                            {mainCategories.map(cat => (
-                                <Link
-                                    key={cat.id}
-                                    href={cat.id === 'All' ? '/products' : `/products?category=${cat.id}${activeType ? `&type=${activeType}` : ''}`}
-                                    className={`text-sm font-semibold transition-all duration-300 ${(activeCategory === cat.id || (!activeCategory && cat.id === 'All'))
-                                        ? 'text-accent ml-2 border-l-2 border-accent pl-3'
-                                        : 'text-muted hover:text-accent hover:pl-2'
-                                        }`}
-                                >
-                                    {cat.label}
-                                </Link>
-                            ))}
-                        </div>
+        <div className="min-h-screen bg-white">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 space-y-6 md:space-y-0">
+                    <div>
+                        <h1 className="text-4xl font-bold tracking-tighter italic uppercase text-zinc-900 mb-2">
+                            {activeCategory || 'All Collections'}
+                        </h1>
+                        <p className="text-zinc-500 text-sm font-medium tracking-widest uppercase">
+                            {filteredProducts.length} Premium Pieces Available
+                        </p>
                     </div>
 
-                    <div className="space-y-6">
-                        <h3 className="text-[11px] font-bold uppercase tracking-[0.3em] text-accent border-b border-accent/20 pb-2">{t('category')}</h3>
-                        <div className="flex flex-col space-y-3">
-                            <Link
-                                href={`/products${activeCategory ? `?category=${activeCategory}` : ''}`}
-                                className={`text-sm font-semibold transition-all duration-300 ${!activeType ? 'text-accent ml-2 border-l-2 border-accent pl-3' : 'text-muted hover:text-accent hover:pl-2'}`}
-                            >
-                                {t('viewAll')}
-                            </Link>
-                            {subCategories.map(sub => (
-                                <Link
-                                    key={sub.id}
-                                    href={`/products?type=${sub.id}${activeCategory ? `&category=${activeCategory}` : ''}`}
-                                    className={`text-sm font-semibold transition-all duration-300 ${activeType === sub.id
-                                        ? 'text-accent ml-2 border-l-2 border-accent pl-3'
-                                        : 'text-muted hover:text-accent hover:pl-2'
-                                        }`}
-                                >
-                                    {sub.label}
-                                </Link>
-                            ))}
+                    <div className="flex space-x-4 w-full md:w-auto">
+                        <div className="relative flex-1 md:w-64">
+                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" size={18} />
+                            <input
+                                type="text"
+                                placeholder={t('search')}
+                                className="w-full pl-12 pr-4 py-3 bg-zinc-50 border border-zinc-100 focus:border-zinc-900 focus:bg-white transition-all outline-none italic"
+                            />
                         </div>
+                        <button className="p-3 bg-zinc-900 text-white hover:bg-zinc-800 transition-colors">
+                            <Filter size={20} />
+                        </button>
                     </div>
+                </div>
 
-                    {(activeCategory || activeType || searchQuery) && (
-                        <div className="pt-6 border-t border-zinc-100">
-                            <button
-                                onClick={() => window.location.href = '/products'}
-                                className="flex items-center space-x-2 text-[10px] font-bold uppercase tracking-widest text-red-500 hover:text-red-600 transition-colors"
-                            >
-                                <X size={14} />
-                                <span>{t('clearFilters')}</span>
-                            </button>
-                        </div>
-                    )}
-                </aside>
-
-                {/* Mobile Filter Scrollable */}
-                <div className="lg:hidden flex overflow-x-auto pb-4 gap-3 no-scrollbar border-b border-zinc-100 -mx-4 px-4 sticky top-16 bg-white z-10 py-4">
-                    <button
-                        onClick={() => setIsMobileFilterOpen(!isMobileFilterOpen)}
-                        className="flex items-center space-x-2 px-4 py-2 bg-zinc-900 text-white rounded-full text-[10px] font-bold uppercase tracking-widest flex-shrink-0"
-                    >
-                        <Filter size={14} />
-                        <span>{t('filters')}</span>
-                    </button>
-                    {mainCategories.map(cat => (
+                {/* Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                    {filteredProducts.map((product) => (
                         <Link
-                            key={cat.id}
-                            href={cat.id === 'All' ? '/products' : `/products?category=${cat.id}`}
-                            className={`px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest flex-shrink-0 border transition-all ${(activeCategory === cat.id || (!activeCategory && cat.id === 'All'))
-                                ? 'bg-accent border-accent text-white shadow-lg'
-                                : 'bg-white border-zinc-200 text-muted'
-                                }`}
+                            key={product.id}
+                            href={`/products/${product.id}`}
+                            className="group"
                         >
-                            {cat.label}
+                            <div className="relative aspect-[3/4] overflow-hidden bg-zinc-100 mb-6 border border-zinc-100 shadow-sm transition-all group-hover:shadow-xl group-hover:border-zinc-200">
+                                <img
+                                    src={product.image}
+                                    alt={product.name}
+                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                />
+                                {product.isFeatured && (
+                                    <div className="absolute top-4 left-4 bg-zinc-900 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 italic">
+                                        Signature Spec
+                                    </div>
+                                )}
+                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-500" />
+
+                                <div className="absolute bottom-4 right-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                                    <div className="p-3 bg-white text-zinc-900 shadow-lg border border-zinc-100">
+                                        <ArrowRight size={20} />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="space-y-1">
+                                <div className="flex justify-between items-start">
+                                    <h3 className="text-sm font-bold uppercase tracking-wide text-zinc-900">{product.name}</h3>
+                                    <span className="font-bold text-sm italic">Rp {product.price.toLocaleString()}</span>
+                                </div>
+                                <p className="text-xs text-zinc-500 font-medium uppercase tracking-widest">{product.subCategory}</p>
+                            </div>
                         </Link>
                     ))}
                 </div>
 
-                {/* Mobile Filter Modal */}
-                {isMobileFilterOpen && (
-                    <div className="fixed inset-0 z-[100] bg-white lg:hidden">
-                        <div className="p-6 border-b flex justify-between items-center shadow-sm sticky top-0 bg-white">
-                            <h2 className="text-xl font-bold uppercase italic tracking-tighter">{t('filters')}</h2>
-                            <button onClick={() => setIsMobileFilterOpen(false)} className="p-2"><X size={24} /></button>
-                        </div>
-                        <div className="p-8 space-y-10 overflow-y-auto h-[calc(100vh-80px)]">
-                            <div className="space-y-6">
-                                <h3 className="text-xs font-bold uppercase tracking-[0.3em] text-accent">{t('collections')}</h3>
-                                <div className="grid grid-cols-2 gap-3">
-                                    {mainCategories.map(cat => (
-                                        <Link
-                                            key={cat.id}
-                                            href={cat.id === 'All' ? '/products' : `/products?category=${cat.id}`}
-                                            onClick={() => setIsMobileFilterOpen(false)}
-                                            className={`p-4 border text-[10px] font-bold uppercase tracking-widest text-center transition-all ${(activeCategory === cat.id || (!activeCategory && cat.id === 'All'))
-                                                ? 'bg-accent border-accent text-white'
-                                                : 'border-zinc-100 text-muted'
-                                                }`}
-                                        >
-                                            {cat.label}
-                                        </Link>
-                                    ))}
-                                </div>
-                            </div>
-                            <div className="space-y-6">
-                                <h3 className="text-xs font-bold uppercase tracking-[0.3em] text-accent">{t('category')}</h3>
-                                <div className="grid grid-cols-2 gap-3">
-                                    {subCategories.map(sub => (
-                                        <Link
-                                            key={sub.id}
-                                            href={`/products?type=${sub.id}${activeCategory ? `&category=${activeCategory}` : ''}`}
-                                            onClick={() => setIsMobileFilterOpen(false)}
-                                            className={`p-4 border text-[10px] font-bold uppercase tracking-widest text-center transition-all ${activeType === sub.id
-                                                ? 'bg-accent border-accent text-white'
-                                                : 'border-zinc-100 text-muted'
-                                                }`}
-                                        >
-                                            {sub.label}
-                                        </Link>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
+                {/* Empty State */}
+                {filteredProducts.length === 0 && (
+                    <div className="py-24 text-center">
+                        <div className="text-zinc-200 uppercase font-bold text-6xl italic tracking-tighter mb-4">No Match</div>
+                        <p className="text-zinc-500 font-medium tracking-widest uppercase text-sm mb-8">Try adjusting your filters</p>
+                        <Link
+                            href="/products"
+                            className="inline-flex items-center space-x-3 text-zinc-900 font-bold uppercase tracking-[0.3em] text-[10px] border-b-2 border-zinc-900 pb-1"
+                        >
+                            <span>Clear All Filters</span>
+                            <X size={12} />
+                        </Link>
                     </div>
                 )}
-
-                {/* Product Grid Area */}
-                <div className="flex-1 space-y-8 lg:space-y-10">
-                    {/* Top Bar - Inline Desktop / Scrollable Mobile Sort */}
-                    <div className="flex flex-col sm:flex-row justify-between items-center gap-6 pb-6 border-b border-zinc-50">
-                        <div className="relative w-full sm:w-80 group">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted transition-colors group-focus-within:text-accent" size={14} />
-                            <input
-                                type="text"
-                                placeholder={t('search')}
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full pl-10 pr-4 py-3 sm:py-2 bg-zinc-50 border border-zinc-100 rounded-sm text-xs font-bold focus:outline-none focus:border-accent focus:bg-white transition-all shadow-sm"
-                            />
-                        </div>
-                        <div className="flex items-center space-x-6 w-full sm:w-auto justify-between sm:justify-end">
-                            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted">{t('sort')}</span>
-                            <div className="relative">
-                                <select
-                                    value={sortBy}
-                                    onChange={(e) => setSortBy(e.target.value)}
-                                    className="appearance-none bg-transparent text-[11px] font-bold uppercase tracking-widest focus:outline-none border-b border-accent pb-1 pr-8 cursor-pointer"
-                                >
-                                    <option>Featured</option>
-                                    <option>Price: Low to High</option>
-                                    <option>Price: High to Low</option>
-                                </select>
-                                <ChevronDown size={14} className="absolute right-0 top-1 text-accent pointer-events-none" />
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Responsive Grid: 2 columns on mobile, 3 on XL */}
-                    <div className="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-3 gap-x-4 sm:gap-x-10 gap-y-12 sm:gap-y-16 animate-fade-in-up">
-                        {filteredProducts.map(product => (
-                            <Link key={product.id} href={`/products/${product.id}`} className="group block space-y-3 sm:space-y-4 hover-lift p-2 -m-2 rounded-lg transition-all">
-                                <div className="relative aspect-[3/4] overflow-hidden bg-zinc-100 rounded-sm shadow-sm group-hover:shadow-xl transition-all">
-                                    <img
-                                        src={product.image}
-                                        alt={product.name}
-                                        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                                    />
-                                    <div className="absolute top-2 sm:top-4 left-2 sm:left-4 flex flex-col gap-1.5 opacity-90 group-hover:opacity-100 transition-opacity">
-                                        <span className="text-[7px] sm:text-[9px] font-bold uppercase tracking-widest bg-white/95 backdrop-blur-sm px-2 sm:px-3 py-1 shadow-sm border border-zinc-100 w-fit text-black">
-                                            {t(product.category.toLowerCase() as any)}
-                                        </span>
-                                        <span className="text-[7px] sm:text-[9px] font-bold uppercase tracking-widest bg-accent text-white px-2 sm:px-3 py-1 shadow-sm w-fit">
-                                            {t(product.subCategory.toLowerCase() as any)}
-                                        </span>
-                                    </div>
-                                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-all duration-300" />
-                                </div>
-                                <div className="space-y-1.5 sm:space-y-2">
-                                    <h3 className="text-[11px] sm:text-xs font-bold uppercase tracking-tight italic group-hover:text-accent transition-colors line-clamp-2">{product.name}</h3>
-                                    <p className="text-xs sm:text-sm font-bold text-zinc-900 italic">Rp {product.price.toLocaleString()}</p>
-                                </div>
-                            </Link>
-                        ))}
-                    </div>
-
-                    {filteredProducts.length === 0 && (
-                        <div className="py-24 text-center space-y-8 bg-zinc-50/50 rounded-sm border border-dashed border-zinc-200 animate-fade-in">
-                            <div className="flex justify-center text-muted opacity-10">
-                                <Search size={80} strokeWidth={1} />
-                            </div>
-                            <div className="space-y-3">
-                                <h2 className="text-2xl font-bold uppercase tracking-tighter italic">{t('noItemsFound')}</h2>
-                                <p className="text-muted text-sm font-medium">{t('noItemsFoundDesc')}</p>
-                            </div>
-                            <button
-                                onClick={() => window.location.href = '/products'}
-                                className="bg-accent text-white px-10 py-4 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-dark-accent transition-all shadow-xl"
-                            >
-                                {t('resetCollection')}
-                            </button>
-                        </div>
-                    )}
-                </div>
             </div>
         </div>
     );
 };
 
-export default function ProductsPage() {
+const ProductsPage = () => {
     return (
         <Suspense fallback={
             <div className="p-24 text-center space-y-6 animate-pulse">
-                <Filter size={48} className="mx-auto text-accent opacity-20" />
-                <div className="font-bold uppercase tracking-[0.4em] text-muted text-xs">Synchronizing Boutique...</div>
+                <div className="text-4xl font-bold tracking-[0.2em] text-zinc-100 italic uppercase">JINISO</div>
+                <p className="text-zinc-400 font-medium tracking-widest uppercase text-xs">Curating your experience...</p>
             </div>
         }>
             <ProductsList />
         </Suspense>
     );
-}
+};
+
+export default ProductsPage;

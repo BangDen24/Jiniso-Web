@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useDemo } from '@/context/DemoContext';
+import { useApp } from '@/context/AppContext';
 import { HelpCircle, ChevronDown, Package, RefreshCw, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
@@ -39,7 +39,7 @@ const FAQItem: React.FC<FAQItemProps> = ({ question, answer, isOpen, onClick }) 
 };
 
 export default function HelpPage() {
-    const { t, setIsChatOpen } = useDemo();
+    const { t, setIsChatOpen } = useApp();
     const [openIndex, setOpenIndex] = useState<number | null>(0); // First item open by default
 
     const toggleAccordion = (index: number) => {
@@ -63,7 +63,7 @@ export default function HelpPage() {
             icon: <Package size={20} className="text-accent" />,
             items: [
                 { q: t('faqShippingQ1'), a: t('faqShippingA1') },
-                { q: 'Do you offer international shipping?', a: 'Currently, this demo focuses on domestic shipping within Indonesia. Stay tuned for global expansion updates.' },
+                { q: 'Do you offer international shipping?', a: 'Currently, JINISO focuses on domestic shipping within Indonesia. Stay tuned for global expansion updates.' },
                 { q: 'How can I change my delivery address?', a: 'You can update your primary residence in your Account settings. For active orders, please contact concierge support immediately.' }
             ]
         },

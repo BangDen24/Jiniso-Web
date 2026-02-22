@@ -2,12 +2,12 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { useDemo } from '@/context/DemoContext';
+import { useApp } from '@/context/AppContext';
 import { PRODUCTS } from '@/lib/data';
 import { User as UserIcon, Mail, Phone, ShoppingCart, Eye, Package, MapPin, History, Sparkles, ChevronRight } from 'lucide-react';
 
 const AccountPage = () => {
-    const { user, timeline, t } = useDemo();
+    const { user, timeline, t } = useApp();
 
     if (!user) {
         return <div className="p-20 text-center font-bold uppercase tracking-widest">{t('login')}</div>;

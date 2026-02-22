@@ -1,14 +1,14 @@
 'use client';
 
 import React from 'react';
-import { useDemo } from '@/context/DemoContext';
+import { useApp } from '@/context/AppContext';
 import { STORES } from '@/lib/data';
 import { MapPin, Navigation, Clock, Phone } from 'lucide-react';
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
 
 export default function StoreLocatorPage() {
-    const { t } = useDemo();
+    const { t } = useApp();
 
     return (
         <div className="min-h-screen bg-zinc-50 pb-24">

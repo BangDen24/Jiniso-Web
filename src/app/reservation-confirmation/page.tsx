@@ -3,11 +3,11 @@
 import React from 'react';
 import Link from 'next/link';
 import { CheckCircle, Calendar, MapPin, ArrowRight } from 'lucide-react';
-import { useDemo } from '@/context/DemoContext';
+import { useApp } from '@/context/AppContext';
 import { PRODUCTS, STORES } from '@/lib/data';
 
 const ReservationConfirmationPage = () => {
-    const { user, t } = useDemo();
+    const { user, t } = useApp();
 
     const reservation = user && user.reservations.length > 0
         ? user.reservations[user.reservations.length - 1]
@@ -81,6 +81,4 @@ const ReservationConfirmationPage = () => {
             </div>
         </div>
     );
-};
-
-export default ReservationConfirmationPage;
+}; export default ReservationConfirmationPage;

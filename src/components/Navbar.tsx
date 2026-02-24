@@ -2,14 +2,21 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useApp } from '@/context/AppContext';
-import { ShoppingCart, User, LogIn, LogOut, Search, Menu, X, ChevronDown, Globe } from 'lucide-react';
+import { ShoppingCart, User, LogIn, LogOut, Search, Menu, X, ChevronDown } from 'lucide-react';
 
 const Navbar = () => {
-    const { user, login, logout, lang, setLang, t } = useApp();
+    const { user, logout, lang, setLang, t } = useApp();
+    const router = useRouter();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [activeMenu, setActiveMenu] = useState<string | null>(null);
     const [searchQuery, setSearchQuery] = useState('');
+
+    const handleLogout = () => {
+        logout();
+        router.push('/');
+    };
 
     const cartCount = user?.cartItems.reduce((acc, item) => acc + item.quantity, 0) || 0;
 
@@ -142,10 +149,16 @@ const Navbar = () => {
                                 className="hidden sm:flex items-center space-x-2 text-xs font-bold uppercase tracking-wider text-accent border border-accent/20 px-4 py-2 hover:bg-accent hover:text-white transition-all shadow-sm"
                             >
                                 <LogIn size={16} />
-                                <span>{t('memberAccess')}</span>
+                                <span>Login</span>
                             </Link>
                         ) : (
                             <div className="flex items-center space-x-4 sm:space-x-6">
+                                {user.role === 'admin' && (
+                                    <Link href="/admin" className="text-accent hover:opacity-70 transition-opacity flex items-center space-x-1 border border-accent/20 px-2 py-1 rounded">
+                                        <span className="text-[10px] font-bold uppercase tracking-wider hidden xl:block">{t('adminDashboard')}</span>
+                                        <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
+                                    </Link>
+                                )}
                                 <Link href="/cart" className="relative text-accent hover:opacity-70 transition-opacity">
                                     <ShoppingCart size={22} />
                                     {cartCount > 0 && (
@@ -157,7 +170,7 @@ const Navbar = () => {
                                 <Link href="/account" className="text-accent hover:opacity-70 transition-opacity">
                                     <User size={22} />
                                 </Link>
-                                <button onClick={logout} className="text-muted hover:text-accent transition-colors hidden sm:block">
+                                <button onClick={handleLogout} className="text-muted hover:text-accent transition-colors hidden sm:block">
                                     <LogOut size={20} />
                                 </button>
                             </div>
@@ -246,7 +259,7 @@ const Navbar = () => {
                         </div>
                         <Link href="/products" className="text-xl font-bold uppercase tracking-tight text-accent pt-4 border-t">{t('viewAll')}</Link>
                         {user && (
-                            <button onClick={logout} className="text-left text-lg font-bold uppercase tracking-tight text-red-500">{t('logout')}</button>
+                            <button onClick={handleLogout} className="text-left text-lg font-bold uppercase tracking-tight text-red-500">{t('logout')}</button>
                         )}
                     </div>
                 </div>

@@ -3,7 +3,8 @@
 import React, { useState } from 'react';
 import { useApp } from '@/context/AppContext';
 import { useRouter } from 'next/navigation';
-import { STATIC_CREDENTIALS } from '@/lib/credentials';
+import { STATIC_CREDENTIALS, ADMIN_CREDENTIALS } from '@/lib/credentials';
+import { INITIAL_USER, INITIAL_ADMIN } from '@/lib/data';
 import { Lock, User as UserIcon, ArrowRight, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 
@@ -23,10 +24,13 @@ export default function LoginPage() {
         // Simulate network delay
         setTimeout(() => {
             if (username === STATIC_CREDENTIALS.username && password === STATIC_CREDENTIALS.password) {
-                login();
+                login(INITIAL_USER);
                 router.push('/');
+            } else if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+                login(INITIAL_ADMIN);
+                router.push('/admin');
             } else {
-                setError('Invalid credentials. Please check your username and password.');
+                setError('Invalid credentials. Hint: use jiniso.admin/adminjiniso123 or dini.cahyo/dincay123');
                 setIsLoading(false);
             }
         }, 1000);
@@ -46,7 +50,7 @@ export default function LoginPage() {
                         <h1 className="text-4xl font-bold tracking-[0.2em] text-white">JINISO</h1>
                     </Link>
                     <p className="text-zinc-400 font-medium tracking-widest uppercase text-xs">
-                        Member Portal Access
+                        Login
                     </p>
                 </div>
 

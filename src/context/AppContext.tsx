@@ -7,7 +7,7 @@ import { Language, translations } from '@/lib/translations';
 interface AppContextType {
     user: User | null;
     timeline: TimelineEvent[];
-    login: () => void;
+    login: (specificUser?: User) => void;
     logout: () => void;
     addToCart: (productId: string, quantity: number) => void;
     removeFromCart: (productId: string) => void;
@@ -67,9 +67,14 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         return translations[lang][key] || key;
     };
 
-    const login = () => {
-        setUser(INITIAL_USER);
-        setTimeline(INITIAL_TIMELINE);
+    const login = (specificUser?: User) => {
+        const targetUser = specificUser || INITIAL_USER;
+        setUser(targetUser);
+        if (targetUser.id === INITIAL_USER.id) {
+            setTimeline(INITIAL_TIMELINE);
+        } else {
+            setTimeline([]);
+        }
     };
 
     const logout = () => {

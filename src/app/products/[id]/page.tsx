@@ -122,10 +122,17 @@ const ProductDetailPage = ({ params }: PageProps) => {
                                 <span>/</span>
                                 <span className="hover:text-accent cursor-pointer transition-colors">{t(product.subCategory.toLowerCase() as any)}</span>
                             </div>
-                            <div className="flex items-center space-x-2 text-yellow-500 bg-zinc-50 px-3 py-1.5 rounded-full border border-zinc-100 w-fit">
-                                <Star size={14} fill="currentColor" />
-                                <span className="text-xs font-bold text-black">{averageRating}</span>
-                                <span className="text-[10px] text-muted font-medium">({productReviews.length} {t('customerReviews')})</span>
+                            <div className="flex items-center space-x-4">
+                                <div className="flex items-center space-x-2 text-yellow-500 bg-zinc-50 px-3 py-1.5 rounded-full border border-zinc-100 w-fit text-nowrap">
+                                    <Star size={14} fill="currentColor" />
+                                    <span className="text-xs font-bold text-black">{averageRating}</span>
+                                    <span className="text-[10px] text-muted font-medium">({productReviews.length} {t('customerReviews')})</span>
+                                </div>
+                                <div className="hidden sm:block h-4 w-[1px] bg-zinc-200" />
+                                <div className="flex items-center space-x-2 bg-zinc-50 px-3 py-1.5 rounded-full border border-zinc-100 w-fit text-nowrap">
+                                    <span className="text-xs font-bold text-black">{product.soldCount}+</span>
+                                    <span className="text-[10px] text-muted font-medium uppercase tracking-wider">{t('productsSold')}</span>
+                                </div>
                             </div>
                         </div>
                         <div className="space-y-4">

@@ -12,6 +12,7 @@ export interface Product {
         storeId: string;
         stock: number;
     }[];
+    soldCount: number;
 }
 
 export interface Store {
@@ -63,6 +64,9 @@ export interface User {
     reservations: { productId: string; storeId: string; date: string }[];
     orders: Order[];
     visitHistory: { date: string; action: string }[];
+    role: 'admin' | 'user';
+    registeredAt: string;
+    loginLogs: { date: string; ip?: string; device?: string }[];
 }
 
 export interface TimelineEvent {
@@ -255,6 +259,7 @@ const generateProducts = (count: number): Product[] => {
                 { storeId: 's2', stock: ((i * 5) % 25) },
                 { storeId: 's3', stock: ((i * 11) % 25) },
             ],
+            soldCount: Math.floor(Math.random() * 500) + 50,
         });
     }
     return items;
@@ -360,7 +365,50 @@ export const INITIAL_USER: User = {
         { date: '2026-02-19T14:20:00Z', action: 'Browsed New Arrivals' },
         { date: '2026-02-20T09:15:00Z', action: 'Added items to cart' },
     ],
+    role: 'user',
+    registeredAt: '2026-01-10T08:00:00Z',
+    loginLogs: [
+        { date: '2026-02-24T09:00:00Z', ip: '192.168.1.1', device: 'Chrome / Windows' },
+        { date: '2026-02-23T10:30:00Z', ip: '192.168.1.1', device: 'Chrome / Windows' },
+        { date: '2026-02-20T09:15:00Z', ip: '192.168.1.1', device: 'Chrome / Windows' },
+    ],
 };
+
+export const INITIAL_ADMIN: User = {
+    id: 'u-admin',
+    name: 'Admin Jiniso',
+    email: 'admin@jiniso.co.id',
+    phone: '+62 811 0000 0000',
+    viewedProducts: [],
+    cartItems: [],
+    reservations: [],
+    orders: [],
+    visitHistory: [],
+    role: 'admin',
+    registeredAt: '2025-12-01T00:00:00Z',
+    loginLogs: [
+        { date: '2026-02-24T08:00:00Z', ip: '10.0.0.1', device: 'Edge / MacOS' },
+    ],
+};
+
+export const USERS: User[] = [
+    INITIAL_USER,
+    INITIAL_ADMIN,
+    {
+        id: 'u2',
+        name: 'Andi Pratama',
+        email: 'andi.pratama@example.com',
+        phone: '+62 813 9876 5432',
+        viewedProducts: ['p-5'],
+        cartItems: [],
+        reservations: [],
+        orders: [],
+        visitHistory: [{ date: '2026-02-22T11:00:00Z', action: 'Login' }],
+        role: 'user',
+        registeredAt: '2026-02-01T15:30:00Z',
+        loginLogs: [{ date: '2026-02-22T11:00:00Z', ip: '172.16.0.4', device: 'Safari / iPhone' }],
+    }
+];
 
 export const INITIAL_TIMELINE: TimelineEvent[] = [
     { id: 'evt-1', date: '2026-02-15T10:30:00Z', type: 'purchased', productId: 'p-1', productName: 'Essential Oversized Tee 1' },

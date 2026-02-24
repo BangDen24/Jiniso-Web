@@ -70,7 +70,7 @@ export default function Home() {
               {t('discover')}
             </Link>
             {!user && (
-              <button onClick={login} className="border border-white/40 backdrop-blur-sm text-white px-8 sm:px-10 py-4 sm:py-5 font-bold uppercase tracking-widest hover:bg-white/10 transition-all">
+              <button onClick={() => login()} className="border border-white/40 backdrop-blur-sm text-white px-8 sm:px-10 py-4 sm:py-5 font-bold uppercase tracking-widest hover:bg-white/10 transition-all">
                 {t('login')}
               </button>
             )}
